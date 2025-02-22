@@ -30,3 +30,15 @@
 *.exe
 *.out
 *.app
+
+*.tlog
+
+DewaterIQ/x64/Debug/qt/moc/
+
+DewaterIQ/x64/Debug/qt/qmake/
+
+DewaterIQ/x64/Debug/qt/
+
+DewaterIQ/.vs/DewaterIQ/v17/
+
+DewaterIQ/.vs/DewaterIQ/FileContentIndex/

@@ -16,7 +16,7 @@ double ExpressionCalculator::calc(const DataStructure* variables) {
 QStringList ExpressionCalculator::infixToPostfix(const DataStructure* variables) {
     QStack<QString> operators;
     QStringList output;
-    QRegularExpression tokenRegex(R"([A-Za-z_][A-Za-z0-9_]*|\d+(\.\d+)?|[\+\-\*/\^\(\)])");
+    QRegularExpression tokenRegex(R"([A-Za-z_:][A-Za-z0-9_:]*|\d+(\.\d+)?|[\+\-\*/\^\(\)])");
 
     QRegularExpressionMatchIterator it = tokenRegex.globalMatch(*this);
     while (it.hasNext()) {

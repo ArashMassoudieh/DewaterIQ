@@ -8,7 +8,7 @@
 #include "ExpressionCalculator.h"
 
 double DataStructure::Eval(const QString& expression) const {
-    QStringList keys = expression.split('.'); // Split "x.y" into ["x", "y"]
+    QStringList keys = expression.split(":"); // Split "x.y" into ["x", "y"]
     if (keys.size() != 2) {
         throw std::invalid_argument("Invalid format. Use 'key.subkey' format.");
     }
@@ -177,3 +177,14 @@ double DataStructure::Calculate(const QString& expression)
     ExpressionCalculator exp(expression);
     return exp.calc(this);
 }
+
+bool DataStructure::contains(const QString& variable) const
+{
+    QStringList terms = variable.split(":");
+    if (terms.count() == 1)
+        return QMap<QString, QMap<QString, double>>::contains(variable);
+    else if (terms.count() == 2)
+        return value(terms[0]).value(terms[1]);
+}
+
+

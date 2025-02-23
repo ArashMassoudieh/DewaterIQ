@@ -1,20 +1,20 @@
 {
-	"Metrogro Ag": {
-	  "Materials and Supplies": 1000,
-	  "Tires and Tubes": 1000,
-	  "Diesel Fuel": 2000,
+	"Metrogro_Ag": {
+	  "Materials_and_Supplies": 1000,
+	  "Tires_and_Tubes": 1000,
+	  "Diesel_Fuel": 2000,
 	  "OS-Maintenance": 4
 	},
-	"Metrogro Farm Ag": {
-	  "Materials and Supplies": 2000,
-	  "Tires and Tubes": 4000,
-	  "Diesel Fuel": 5000,
-	  "OS-Maintenance": 8000
+	"Metrogro_Farm_Ag": {
+	  "Materials_and_Supplies":2000,
+	  "Tires_and_Tubes": 4000,
+	  "Diesel_Fuel": 5000,
+	  "OS_Maintenance": 8000
 	},
-	"Stromo Compost": {
-	  "Materials and Supplies": 1,
-	  "Tires and Tubes": 1,
-	  "Diesel Fuel": 1,
-	  "OS-Maintenance": 1
+	"Stromo_Compost": {
+	  "Materials_and_Supplies": 1,
+	  "Tires_and_Tubes": 1,
+	  "Diesel_Fuel": 1,
+	  "OS_Maintenance": 1
 	}
 }

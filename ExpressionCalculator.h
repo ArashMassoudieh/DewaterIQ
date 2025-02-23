@@ -68,7 +68,7 @@ public:
     static QStringList infixToPostfix(const QString& expression, const QMap<QString, double>& variables) {
         QStack<QString> operators;
         QStringList output;
-        QRegularExpression tokenRegex(R"([A-Za-z_][A-Za-z0-9_]*|\d+(\.\d+)?|[\+\-\*/\^\(\)])");
+        QRegularExpression tokenRegex(R"([A-Za-z_:][A-Za-z0-9_:]*|\d+(\.\d+)?|[\+\-\*/\^\(\)])");
 
         QRegularExpressionMatchIterator it = tokenRegex.globalMatch(expression);
         while (it.hasNext()) {

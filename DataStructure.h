@@ -31,6 +31,7 @@ public:
     bool writeToJsonFile(const QString& filename) const;
     int SetLevels(const QJsonObject& jsonobject);
     double Calculate(const QString& expression);
+    bool contains(const QString &variable) const;
 private:
     int levels = 2; 
 

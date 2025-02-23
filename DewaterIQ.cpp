@@ -13,10 +13,11 @@ DewaterIQ::DewaterIQ(QWidget *parent)
     system.WritetoJsonFile("C:/Projects/DewaterIQ/system.json");
     System system1;
     system1.readFromJsonFile("C:/Projects/DewaterIQ/system.json");
-    qDebug() << data_single_table.sumKeys("Materials and Supplies");
-    qDebug() << data_single_table.sumSubkeys("Stromo Compost");
+    qDebug() << data_single_table.sumKeys("Materials_and_Supplies");
+    qDebug() << data_single_table.sumSubkeys("Stromo_Compost");
     qDebug() << data_single_table.sumTotal();
-    
+    qDebug() << data_single_table.Eval("Stromo_Compost:Materials_and_Supplies");
+    qDebug() << data_single_table.Calculate("Stromo_Compost:Materials_and_Supplies*Metrogro_Farm_Ag:Tires_and_Tubes");
     ui.setupUi(this);
 }
 

@@ -1,0 +1,48 @@
+{
+  "Transportation Costs": {
+    "Metrogro Ag": {
+      "Materials and Supplies": 0,
+      "Tires and Tubes": 0,
+      "Diesel Fuel": 0,
+      "OS-Maintenance": 0
+    },
+    "Metrogro Farm Ag": {
+      "Materials and Supplies": 0,
+      "Tires and Tubes": 0,
+      "Diesel Fuel": 0,
+      "OS-Maintenance": 0
+    },
+    "Stromo Compost": {
+      "Materials and Supplies": 0,
+      "Tires and Tubes": 0,
+      "Diesel Fuel": 0,
+      "OS-Maintenance": 0
+    }
+  },
+  "Distribution Costs": {
+    "Metrogro Ag": {
+      "Materials and Supplies": 2780000,
+      "Tires and Tubes": 260000,
+      "Diesel Fuel": 1400000,
+      "OS-Rental": 42000,
+      "OS-Other": 1280000,
+      "OS-Maintenance": 210000
+    },
+    "Metrogro Farm Ag": {
+      "Materials and Supplies": 0,
+      "Tires and Tubes": 0,
+      "Diesel Fuel": 205000,
+      "OS-Rental": 1000,
+      "OS-Other": 500,
+      "OS-Maintenance": 0
+    },
+    "Stromo Compost": {
+      "Materials and Supplies": 0,
+      "Tires and Tubes": 0,
+      "Diesel Fuel": 0,
+      "OS-Rental": 0,
+      "OS-Other": 0,
+      "OS-Maintenance": 0
+    }
+  }
+}

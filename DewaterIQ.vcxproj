@@ -92,7 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ExpressionCalculator.cpp" />
+    <ClCompile Include="ExpressionCalculator.hpp" />
     <ClCompile Include="System.cpp" />
     <QtRcc Include="DewaterIQ.qrc" />
     <QtUic Include="DewaterIQ.ui" />

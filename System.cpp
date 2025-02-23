@@ -1,5 +1,6 @@
 #include "System.h"
 #include <QFile>
+#include "ExpressionCalculator.h"
 
 QJsonObject System::toJsonObject() const
 {
@@ -63,4 +64,24 @@ bool System::readFromJsonFile(const QString& filename) {
     QJsonObject rootObj = jsonDoc.object();
     return FromJsonObject(rootObj);
 
+}
+
+double System::Calculate(const QString& expression) const
+{
+    ExpressionCalculator exp(expression);
+    return exp.calc(this);
+}
+
+bool System::contains(const QString& variable) const
+{
+    QStringList terms = variable.split(":");
+    if (terms.count() == 0) return false;
+    bool outcome = true; 
+    outcome = outcome && QMap<QString, DataStructure>::contains(terms[0]);
+    if (terms.count() == 2)
+        outcome = outcome && value(terms[0]).contains(terms[1]);
+    else if (terms.count() == 3)
+        outcome = outcome && value(terms[0]).value(terms[1]).value(terms[2]);
+
+    return outcome; 
 }

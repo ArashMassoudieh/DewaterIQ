@@ -18,6 +18,7 @@ DewaterIQ::DewaterIQ(QWidget *parent)
     qDebug() << data_single_table.sumTotal();
     qDebug() << data_single_table.Eval("Stromo_Compost:Materials_and_Supplies");
     qDebug() << data_single_table.Calculate("Stromo_Compost:Materials_and_Supplies*Metrogro_Farm_Ag:Tires_and_Tubes");
+    qDebug() << system.Calculate("item1:Stromo_Compost:Materials_and_Supplies*item2:Metrogro_Farm_Ag:Tires_and_Tubes");
     ui.setupUi(this);
 }
 

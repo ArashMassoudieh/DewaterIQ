@@ -181,10 +181,13 @@ double DataStructure::Calculate(const QString& expression)
 bool DataStructure::contains(const QString& variable) const
 {
     QStringList terms = variable.split(":");
-    if (terms.count() == 1)
-        return QMap<QString, QMap<QString, double>>::contains(variable);
-    else if (terms.count() == 2)
-        return value(terms[0]).value(terms[1]);
+    if (terms.count() == 0) return false;
+    bool outcome = true;
+    outcome = outcome && QMap<QString, QMap<QString, double>>::contains(terms[0]);
+    if (terms.count() == 2)
+        outcome = outcome && value(terms[0]).contains(terms[1]);
+    
+    return outcome;
 }
 
 

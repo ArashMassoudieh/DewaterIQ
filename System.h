@@ -25,7 +25,7 @@ public:
 
     // Eval Function for "x.y.z"
     double Eval(const QString& expression) const {
-        QStringList keys = expression.split('.'); // Split into ["x", "y", "z"]
+        QStringList keys = expression.split(':'); // Split into ["x", "y", "z"]
         if (keys.size() != 3) {
             throw std::invalid_argument("Invalid format for System. Use 'key1.key2.key3'");
         }
@@ -55,5 +55,8 @@ public:
 
     bool readFromJsonFile(const QString& filename);
     
+    double Calculate(const QString& expression) const;
+
+    bool contains(const QString& variable) const;
     
 };

@@ -1,8 +1,8 @@
+#pragma once
 #include "ExpressionCalculator.h"
-#include "DataStructure.h"
 
-
-double ExpressionCalculator::calc(const DataStructure* variables) {
+template <typename T>
+double ExpressionCalculator::calc(const T* variables) {
     try {
         QStringList postfix = infixToPostfix(variables);
         return evaluatePostfix(postfix, variables);
@@ -13,7 +13,9 @@ double ExpressionCalculator::calc(const DataStructure* variables) {
     }
 }
 
-QStringList ExpressionCalculator::infixToPostfix(const DataStructure* variables) {
+
+template <typename T>
+QStringList ExpressionCalculator::infixToPostfix(const T* variables) {
     QStack<QString> operators;
     QStringList output;
     QRegularExpression tokenRegex(R"([A-Za-z_:][A-Za-z0-9_:]*|\d+(\.\d+)?|[\+\-\*/\^\(\)])");
@@ -65,7 +67,8 @@ QStringList ExpressionCalculator::infixToPostfix(const DataStructure* variables)
     return output;
 }
 
-double ExpressionCalculator::evaluatePostfix(const QStringList& postfix, const DataStructure *variables) {
+template <typename T>
+double ExpressionCalculator::evaluatePostfix(const QStringList& postfix, const T *variables) {
     QStack<double> stack;
 
     for (const QString& token : postfix) {

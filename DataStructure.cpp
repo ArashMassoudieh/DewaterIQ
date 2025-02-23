@@ -5,6 +5,7 @@
 #include <QJsonArray>
 #include <QFile>
 #include <QDebug>
+#include "ExpressionCalculator.h"
 
 double DataStructure::Eval(const QString& expression) const {
     QStringList keys = expression.split('.'); // Split "x.y" into ["x", "y"]
@@ -131,6 +132,18 @@ double DataStructure::sumKeys(const QString &key) const {
     return totalSum;
 }
 
+double DataStructure::sumTotal() const {
+    double totalSum = 0;
+    for (const QMap<QString, double>& Map : this->values()) {
+        for (const double &subMap : Map.values())
+        {
+            totalSum += subMap;
+        }
+    }
+
+    return totalSum;
+}
+
 // Write DataStructure to JSON file
 bool DataStructure::writeToJsonFile(const QString& filename) const {
     QJsonDocument jsonDoc = toJsonDocument();
@@ -157,4 +170,10 @@ int DataStructure::SetLevels(const QJsonObject& jsonobject)
         else
             return 1; 
     }
+}
+
+double DataStructure::Calculate(const QString& expression)
+{
+    ExpressionCalculator exp(expression);
+    return exp.calc(this);
 }

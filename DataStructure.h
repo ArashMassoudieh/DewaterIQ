@@ -25,10 +25,12 @@ public:
     QJsonDocument toJsonDocument() const;
     double sumSubkeys(const QString& key) const;
     double sumKeys(const QString &key) const;
+    double sumTotal() const;
     QJsonObject toJsonObject() const;
 
     bool writeToJsonFile(const QString& filename) const;
     int SetLevels(const QJsonObject& jsonobject);
+    double Calculate(const QString& expression);
 private:
     int levels = 2; 
 

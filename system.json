@@ -1,26 +1,42 @@
 {
     "item1": {
-        "Distribution Costs": {
-            "Metrogro Ag": 0,
-            "Metrogro Farm Ag": 0,
-            "Stromo Compost": 0
+        "Metrogro Ag": {
+            "Diesel Fuel": 2000,
+            "Materials and Supplies": 1000,
+            "OS-Maintenance": 4,
+            "Tires and Tubes": 1000
         },
-        "Transportation Costs": {
-            "Metrogro Ag": 0,
-            "Metrogro Farm Ag": 0,
-            "Stromo Compost": 0
+        "Metrogro Farm Ag": {
+            "Diesel Fuel": 5000,
+            "Materials and Supplies": 2000,
+            "OS-Maintenance": 8000,
+            "Tires and Tubes": 4000
+        },
+        "Stromo Compost": {
+            "Diesel Fuel": 1,
+            "Materials and Supplies": 1,
+            "OS-Maintenance": 1,
+            "Tires and Tubes": 1
         }
     },
     "item2": {
-        "Distribution Costs": {
-            "Metrogro Ag": 0,
-            "Metrogro Farm Ag": 0,
-            "Stromo Compost": 0
+        "Metrogro Ag": {
+            "Diesel Fuel": 2000,
+            "Materials and Supplies": 1000,
+            "OS-Maintenance": 4,
+            "Tires and Tubes": 1000
         },
-        "Transportation Costs": {
-            "Metrogro Ag": 0,
-            "Metrogro Farm Ag": 0,
-            "Stromo Compost": 0
+        "Metrogro Farm Ag": {
+            "Diesel Fuel": 5000,
+            "Materials and Supplies": 2000,
+            "OS-Maintenance": 8000,
+            "Tires and Tubes": 4000
+        },
+        "Stromo Compost": {
+            "Diesel Fuel": 1,
+            "Materials and Supplies": 1,
+            "OS-Maintenance": 1,
+            "Tires and Tubes": 1
         }
     }
 }

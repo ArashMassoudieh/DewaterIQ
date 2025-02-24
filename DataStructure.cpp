@@ -9,8 +9,17 @@
 
 double DataStructure::Eval(const QString& expression) const {
     QStringList keys = expression.split(":"); // Split "x.y" into ["x", "y"]
-    if (keys.size() != 2) {
+    if (keys.size() > 2) {
         throw std::invalid_argument("Invalid format. Use 'key.subkey' format.");
+    }
+
+    if (keys.size() == 1)
+    {
+        int itemlevel = level(keys[0]);
+        if (itemlevel == 0)
+            return sumSubkeys(keys[0]);
+        else
+            return sumKeys(keys[0]);
     }
 
     QString key1 = keys[0];
@@ -119,6 +128,17 @@ double DataStructure::sumSubkeys(const QString& key) const {
     return sum;
 }
 
+int DataStructure::level(const QString& item) const // return zero for the top level and one for bottom level; 
+{
+    if (count() == 0)
+        return -1; 
+    if (QMap<QString, QMap<QString, double>>::contains(item))
+        return 0; 
+    if (begin()->contains(item))
+        return 1; 
+    return -1; 
+}
+
 // Sum of all values across keys (First level)
 double DataStructure::sumKeys(const QString &key) const {
     double totalSum = 0;
@@ -183,10 +203,13 @@ bool DataStructure::contains(const QString& variable) const
     QStringList terms = variable.split(":");
     if (terms.count() == 0) return false;
     bool outcome = true;
-    outcome = outcome && QMap<QString, QMap<QString, double>>::contains(terms[0]);
+    if (terms.count() == 2)
+        outcome = outcome && QMap<QString, QMap<QString, double>>::contains(terms[0]);
     if (terms.count() == 2)
         outcome = outcome && value(terms[0]).contains(terms[1]);
-    
+    if (terms.count() == 1)
+        outcome = outcome && (level(terms[0]) != -1);
+            
     return outcome;
 }
 

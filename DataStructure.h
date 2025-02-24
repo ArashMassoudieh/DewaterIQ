@@ -24,6 +24,7 @@ public:
 
     QJsonDocument toJsonDocument() const;
     double sumSubkeys(const QString& key) const;
+    int level(const QString& item) const;
     double sumKeys(const QString &key) const;
     double sumTotal() const;
     QJsonObject toJsonObject() const;

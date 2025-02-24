@@ -78,10 +78,26 @@ bool System::contains(const QString& variable) const
     if (terms.count() == 0) return false;
     bool outcome = true; 
     outcome = outcome && QMap<QString, DataStructure>::contains(terms[0]);
+    if (terms.count() == 1)
+    {
+        outcome && (contains(terms[0]) || begin()->contains(terms[0]));
+    }
     if (terms.count() == 2)
-        outcome = outcome && value(terms[0]).contains(terms[1]);
+        outcome = outcome && (value(terms[0]).contains(terms[1]) || begin()->value(terms[0]).contains(terms[1]));
     else if (terms.count() == 3)
         outcome = outcome && value(terms[0]).value(terms[1]).value(terms[2]);
 
     return outcome; 
+}
+
+
+int System::level(const QString& item) const // return zero for the top level and one for bottom level; 
+{
+    if (count() == 0)
+        return -1;
+    if (QMap<QString, DataStructure>::contains(item))
+        return 0;
+    if (begin()->contains(item))
+        return begin()->level(item)+1;
+    return -1;
 }

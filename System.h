@@ -58,5 +58,7 @@ public:
     double Calculate(const QString& expression) const;
 
     bool contains(const QString& variable) const;
+
+    int level(const QString& item) const;
     
 };

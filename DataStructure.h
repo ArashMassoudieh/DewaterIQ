@@ -3,6 +3,8 @@
 #include <QString>
 #include <QJsonDocument>
 
+class AquaArray; 
+
 class DataStructure : public QMap<QString, QMap<QString,double>>
 {
     
@@ -32,6 +34,8 @@ public:
     bool writeToJsonFile(const QString& filename) const;
     int SetLevels(const QJsonObject& jsonobject);
     double Calculate(const QString& expression);
+    double Calculate(const AquaArray* array, const QString& expression);
+    AquaArray Calculate(const QVector<AquaArray>* array, const QString& expression);
     bool contains(const QString &variable) const;
 private:
     int levels = 2; 

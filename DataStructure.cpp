@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QDebug>
 #include "ExpressionCalculator.h"
+#include "AquaArray.h"
 
 double DataStructure::Eval(const QString& expression) const {
     QStringList keys = expression.split(":"); // Split "x.y" into ["x", "y"]
@@ -197,6 +198,19 @@ double DataStructure::Calculate(const QString& expression)
     ExpressionCalculator exp(expression);
     return exp.calc(this);
 }
+
+double DataStructure::Calculate(const AquaArray *array, const QString& expression)
+{
+    ExpressionCalculator exp(expression);
+    return exp.calc(array,this);
+}
+
+AquaArray DataStructure::Calculate(const QVector<AquaArray>* array, const QString& expression)
+{
+    ExpressionCalculator exp(expression);
+    return exp.calc(array, this);
+}
+
 
 bool DataStructure::contains(const QString& variable) const
 {

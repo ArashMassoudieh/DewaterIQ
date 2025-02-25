@@ -49,6 +49,9 @@
     <ClCompile Include="ExpressionCalculator.hpp">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="AquaArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataStructure.h">
@@ -58,6 +61,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ExpressionCalculator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AquaArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

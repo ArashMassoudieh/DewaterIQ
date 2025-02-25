@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AquaArray.cpp" />
     <ClCompile Include="ExpressionCalculator.hpp" />
     <ClCompile Include="System.cpp" />
     <QtRcc Include="DewaterIQ.qrc" />
@@ -102,6 +103,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AquaArray.h" />
     <ClInclude Include="DataStructure.h" />
     <ClInclude Include="ExpressionCalculator.h" />
     <ClInclude Include="System.h" />

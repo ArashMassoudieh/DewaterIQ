@@ -9,6 +9,7 @@
 
 class DataStructure; 
 class System; 
+class AquaArray; 
 
 class ExpressionCalculator: public QString
 {
@@ -71,8 +72,30 @@ public:
     template <typename T>
     QStringList infixToPostfix(const T* variables);
 
+    template<typename T>
+    QStringList infixToPostfix(const AquaArray* array, const T* variables);
+
     template <typename T>
     double evaluatePostfix(const QStringList& postfix, const T* variables);
+
+    template <typename T>
+    double calc(const AquaArray* array, const T* variables);
+
+    template<typename T>
+    AquaArray calc(const QVector<AquaArray>* array, const T* variables);
+
+    template <typename T>
+    double evaluatePostfix(const AquaArray* array, const QStringList& postfix, const T* variables);
+
+    static bool isValidXFormat(const QString& str) {
+        // The regex pattern: 
+        // ^       : start of string
+        // x       : literal 'x'
+        // \d+     : one or more digits
+        // $       : end of string
+        QRegularExpression regex("^x\\d+$");
+        return regex.match(str).hasMatch();
+    }
 
 };
 

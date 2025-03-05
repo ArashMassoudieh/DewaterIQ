@@ -227,4 +227,146 @@ bool DataStructure::contains(const QString& variable) const
     return outcome;
 }
 
+bool DataStructure::Validate() const
+{
+    if (NumberOfRows() == -1)
+    {
+        qDebug() << "Number of rows are different";
+        return false;
+    }
+    QStringList rowHeaders = RowHeaders(); 
+    
+    if (rowHeaders.size() == 0)
+    {
+        qDebug() << "Row names are different! ";
+        return false;
+    }
+    return true; 
+    
+
+}
+
+bool DataStructure::appendColumn(const QString& columnname, AquaArray& array, const QStringList &rownames)
+{
+    if (array.count() != NumberOfRows() && NumberOfRows() != 0)
+    {
+        qDebug() << "Number of array element is different than the number of rows.";
+        return false;
+    }
+    if (rownames.count()!=0 && rownames.count()!=array.count())
+    {
+        qDebug() << "Number of array element is different than the number of names provided.";
+        return false; 
+    }
+    int i = 0; 
+    for (QMap<QString, double>& Map : this->values())
+    {
+        if (rownames.count() != 0)
+            Map[columnname] = array[i];
+        else
+            Map[QString::number(array[i])] = array[i];
+    }
+    return true; 
+
+}
+
+QStringList DataStructure::ColumnHeaders() const
+{
+    QStringList out; 
+    out.append(this->keys());
+    return out; 
+}
+
+QStringList DataStructure::RowHeaders() const
+{
+    QStringList out; 
+    for (QMap<QString, double>& Map : this->values())
+    {
+        if (out.isEmpty() || Map.keys() == out)
+            out = Map.keys();
+        else
+        {
+            qDebug() << "Row names are different";
+            return QStringList();
+        }
+    }
+    return out; 
+}
+
+bool DataStructure::writeToCSVFile(const QString& filename) const
+{
+    
+    QFile file(filename);
+
+    // Attempt to open the file in write-only and text mode.
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Error: Unable to open file for writing:" << file.errorString();
+        return false;
+    }
+
+    QTextStream out(&file);
+
+    QStringList rowHeaders = RowHeaders();
+    if (rowHeaders.size() == 0)
+    {
+        return false; 
+    }
+    QStringList colHeaders = ColumnHeaders(); 
+    for (int i = 0; i < colHeaders.count(); i++)
+        out << "," << colHeaders[i];
+    out << "\n";
+    
+    for (int i = 0; i < rowHeaders.count(); i++)
+    {
+        out << rowHeaders[i];
+        for (QMap<QString, double>& Map : this->values())
+            out << "," << Map.value(rowHeaders[i]);
+        out << "\n";
+    }
+    
+    file.close();
+    return true;
+}
+
+bool DataStructure::appendRow(const QString& rowname, AquaArray& array)
+{
+    if (array.count() != NumberOfColumns() && NumberOfRows() != 0)
+    {
+        qDebug() << "Number of array element is different than the number of columns.";
+        return false;
+    }
+    
+    int i = 0;
+    QMap<QString, double> tobeadded; 
+    for (unsigned int i = 0; i < array.size(); i++)
+    {
+    
+    }
+    return true;
+
+}
+
+unsigned int DataStructure::NumberOfColumns() const
+{
+    return count();
+}
+
+unsigned int DataStructure::NumberOfRows() const
+{
+    int out = -1; 
+    for (const QMap<QString, double>& Map : this->values())
+    {
+        if (Map.count() == out || out == -1)
+        {
+            out = Map.count();
+        }
+        else
+        {
+            qDebug() << "Number of rows are different"; 
+            return -1; 
+        }
+    }
+    return out; 
+}
+
 

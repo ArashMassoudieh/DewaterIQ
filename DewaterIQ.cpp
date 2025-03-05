@@ -29,6 +29,14 @@ DewaterIQ::DewaterIQ(QWidget *parent)
     }
     qDebug() << data_single_table.Calculate(&X, "x1*Metrogro_Farm_Ag");
     ui.setupUi(this);
+    DataStructure out; 
+    qDebug() << "Number of Columns: " << data_single_table.NumberOfColumns(); 
+    qDebug() << "Number of Rows: " << data_single_table.NumberOfRows();
+    qDebug() << "Row Headers: " << data_single_table.RowHeaders(); 
+    qDebug() << "Column Headers: " << data_single_table.ColumnHeaders();
+    qDebug() << "Validate: " << data_single_table.Validate();
+    data_single_table.writeToCSVFile("Table.csv");
+
 }
 
 DewaterIQ::~DewaterIQ()

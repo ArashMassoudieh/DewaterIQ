@@ -1,5 +1,7 @@
 #pragma once
 #include <QVector>
+
+
 class AquaArray : public QVector<double>
 {
 public:

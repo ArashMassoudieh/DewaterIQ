@@ -1,0 +1,10 @@
+{
+	"Slope": {
+	  "Dry": 7.5,
+	  "Emulsion": 13.5
+	},
+	"Emulsion": {
+	  "Dry": -6.2,
+	  "Emulsion": -28.3
+	}
+}

@@ -1,0 +1,26 @@
+{
+	"Metrogro_Ag": {
+	  "Materials_and_Supplies": 2780000,
+	  "Tires_and_Tubes": 26000,
+	  "Diesel_Fuel": 1400000,
+	  "OS_Rental": 42000,
+	  "OS_Other": 1280000,
+	  "OS_Maintenance": 21000
+	},
+	"Metrogro_Farm_Ag": {
+	  "Materials_and_Supplies":0,
+	  "Tires_and_Tubes": 0,
+	  "Diesel_Fuel": 205000,
+	  "OS_Rental": 1000,
+	  "OS_Other": 500,
+	  "OS_Maintenance": 0
+	},
+	"Stromo_Compost": {
+	  "Materials_and_Supplies": 0,
+	  "Tires_and_Tubes": 0,
+	  "Diesel_Fuel": 0,
+	  "OS_Rental": 0,
+	  "OS_Other": 0,
+	  "OS_Maintenance": 0
+	}
+}

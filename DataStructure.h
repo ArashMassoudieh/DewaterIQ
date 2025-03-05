@@ -37,6 +37,15 @@ public:
     double Calculate(const AquaArray* array, const QString& expression);
     AquaArray Calculate(const QVector<AquaArray>* array, const QString& expression);
     bool contains(const QString &variable) const;
+    bool Validate() const;
+    bool appendColumn(const QString& columnname, AquaArray& array, const QStringList& rownames = QStringList());
+    QStringList ColumnHeaders() const;
+    QStringList RowHeaders() const;
+    bool writeToCSVFile(const QString& filename) const;
+    bool appendRow(const QString& rowname, AquaArray& array);
+    unsigned int NumberOfColumns() const; 
+    unsigned int NumberOfRows() const;
+
 private:
     int levels = 2; 
 

@@ -1,0 +1,14 @@
+{
+	"Amount": {
+	  "Regular_Wages_Benefits": 2234841,
+	  "Each_New_Operator": 10000,
+	  "Each_New_Mechanic": 10000,
+	  "Tractor_Trailer_Combination": 25000
+	},
+	"Percent_Decrease": {
+	  "Regular_Wages_Benefits": 0.01,
+	  "Each_New_Operator": 0.01,
+	  "Each_New_Mechanic": 0.02,
+	  "Tractor_Trailer_Combination": 0.01
+	}
+}

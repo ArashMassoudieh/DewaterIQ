@@ -2,7 +2,7 @@
     "Metrogro_Ag": {
         "Diesel_Fuel": 2000,
         "Materials_and_Supplies": 1000,
-        "OS-Maintenance": 4,
+        "OS_Maintenance": 4,
         "Tires_and_Tubes": 1000
     },
     "Metrogro_Farm_Ag": {

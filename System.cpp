@@ -72,7 +72,7 @@ double System::Calculate(const QString& expression) const
     return exp.calc(this);
 }
 
-AquaArray System::Calculate(const QVector<AquaArray>* array, const QString& expression)
+AquaArray System::Calculate(const AquaTable* array, const QString& expression)
 {
     ExpressionCalculator exp(expression);
     return exp.calc(array, this);
@@ -106,4 +106,17 @@ int System::level(const QString& item) const // return zero for the top level an
     if (begin()->contains(item))
         return begin()->level(item)+1;
     return -1;
+}
+
+bool System::InsertScalar(const QString &VariableName, const double& value)
+{
+    if (contains(VariableName))
+    {
+        throw std::runtime_error(("Variable " + VariableName + " already exists").toStdString() );
+        return false;
+    }
+    DataStructure data;
+    data["value"]["value"] = value;
+    operator[](VariableName) = data;
+    return true;
 }

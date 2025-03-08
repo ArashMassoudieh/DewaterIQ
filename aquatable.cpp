@@ -53,9 +53,7 @@ bool AquaTable::AppendColumn(const QString &columnname, const AquaArray &column)
         {
             for (int i = 0; i<column.size(); i++)
             {
-                AquaArray tobeadded;
-                tobeadded.append(column[i]);
-                append(tobeadded);
+                operator[](i).append(column[i]);
             }
         }
 

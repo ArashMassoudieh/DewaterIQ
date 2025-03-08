@@ -12,6 +12,7 @@ SOURCES += \
     AquaArray.cpp \
     DataStructure.cpp \
     DewaterIQ.cpp \
+    ExpressionCalculator.cpp \
     System.cpp \
     aquatable.cpp \
     main.cpp \

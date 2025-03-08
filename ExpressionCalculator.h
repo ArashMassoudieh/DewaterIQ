@@ -7,9 +7,12 @@
 #include <cmath>
 #include <stdexcept>
 
-class DataStructure; 
-class System; 
-class AquaArray; 
+class DataStructure;
+class System;
+class AquaArray;
+
+double hsd(double x);
+double floor(double x);
 
 class ExpressionCalculator: public QString
 {
@@ -18,7 +21,7 @@ public:
     // Supported mathematical functions
     inline static QMap<QString, double(*)(double)> functions = {
         {"sin", sin}, {"cos", cos}, {"tan", tan},
-        {"log", log}, {"exp", exp}, {"sqrt", sqrt}
+        {"log", log}, {"exp", exp}, {"sqrt", sqrt}, {"hsd",hsd}, {"floor", floor}
     };
 
     ExpressionCalculator(const QString& expression) :QString(expression)
@@ -98,5 +101,6 @@ public:
     }
 
 };
+
 
 #include "ExpressionCalculator.hpp"

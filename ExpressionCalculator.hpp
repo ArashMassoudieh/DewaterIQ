@@ -248,3 +248,4 @@ AquaArray ExpressionCalculator::calc(const QVector<AquaArray>* array, const T* v
     }
     return output; 
 }
+

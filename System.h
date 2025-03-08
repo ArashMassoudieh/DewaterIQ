@@ -81,10 +81,11 @@ public:
     bool readFromJsonFile(const QString& filename);
     
     double Calculate(const QString& expression) const;
-    AquaArray Calculate(const QVector<AquaArray>* array, const QString& expression);
+    AquaArray Calculate(const AquaTable* array, const QString& expression);
 
     bool contains(const QString& variable) const;
 
     int level(const QString& item) const;
     
+    bool InsertScalar(const QString &VariableName, const double& value);
 };

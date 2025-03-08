@@ -9,10 +9,18 @@
 #include "AquaArray.h"
 
 double DataStructure::Eval(const QString& expression) const {
+
+    if (expression.isEmpty())
+    {
+        return sumTotal();
+    }
+
     QStringList keys = expression.split(":"); // Split "x.y" into ["x", "y"]
     if (keys.size() > 2) {
         throw std::invalid_argument("Invalid format. Use 'key.subkey' format.");
     }
+
+
 
     if (keys.size() == 1)
     {
@@ -205,7 +213,7 @@ double DataStructure::Calculate(const AquaArray *array, const QString& expressio
     return exp.calc(array,this);
 }
 
-AquaArray DataStructure::Calculate(const QVector<AquaArray>* array, const QString& expression)
+AquaArray DataStructure::Calculate(const AquaTable* array, const QString& expression)
 {
     ExpressionCalculator exp(expression);
     return exp.calc(array, this);
@@ -343,8 +351,28 @@ bool DataStructure::appendRow(const QString& rowname, AquaArray& array)
     
     }
     return true;
+}
+
+bool DataStructure::appendColumn(const QString& columnname, AquaArray& array)
+{
+    if (array.count() != NumberOfRows() && NumberOfColumns() != 0)
+    {
+        qDebug() << "Number of array element is different than the number of columns.";
+        return false;
+    }
+
+    int i = 0;
+    QMap<QString, double> tobeadded;
+    for (unsigned int i = 0; i < array.size(); i++)
+    {
+
+    }
+    this->operator[](columnname) = tobeadded;
+    return true;
 
 }
+
+
 
 unsigned int DataStructure::NumberOfColumns() const
 {

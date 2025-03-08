@@ -1,6 +1,7 @@
 #pragma once
 #include <QVector>
 
+enum class sequencemode {linear, logarithmic};
 
 class AquaArray : public QVector<double>
 {
@@ -25,6 +26,8 @@ public:
     ~AquaArray() {
         // No additional cleanup is needed because QVector handles its own memory.
     }
+    bool CreateSequence(const double &min, const double &max, const unsigned int &number_of_intervals, sequencemode mode);
+
 
 };
 

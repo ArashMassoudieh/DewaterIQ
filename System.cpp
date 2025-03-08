@@ -72,6 +72,12 @@ double System::Calculate(const QString& expression) const
     return exp.calc(this);
 }
 
+AquaArray System::Calculate(const QVector<AquaArray>* array, const QString& expression)
+{
+    ExpressionCalculator exp(expression);
+    return exp.calc(array, this);
+}
+
 bool System::contains(const QString& variable) const
 {
     QStringList terms = variable.split(":");
@@ -80,12 +86,12 @@ bool System::contains(const QString& variable) const
     outcome = outcome && QMap<QString, DataStructure>::contains(terms[0]);
     if (terms.count() == 1)
     {
-        outcome && (contains(terms[0]) || begin()->contains(terms[0]));
+        outcome = outcome || begin()->contains(terms[0]);
     }
     if (terms.count() == 2)
-        outcome = outcome && (value(terms[0]).contains(terms[1]) || begin()->value(terms[0]).contains(terms[1]));
+        outcome = outcome && (value(terms[0]).contains(terms[1]) || begin()->contains(variable));
     else if (terms.count() == 3)
-        outcome = outcome && value(terms[0]).value(terms[1]).value(terms[2]);
+        outcome = outcome && (value(terms[0]).contains(terms[1]) && begin()->value(terms[1]).contains(terms[2]) );
 
     return outcome; 
 }

@@ -50,3 +50,9 @@ DewaterIQ/.vs/DewaterIQ/FileContentIndex/
 DewaterIQ/x64/Debug/
 
 x64/Debug/
+
+build/Debug/.qtc_clangd/.cache/clangd/index/
+
+build/Debug/
+
+build/Release/

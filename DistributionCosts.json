@@ -1,11 +1,11 @@
 {
 	"Metrogro_Ag": {
 	  "Materials_and_Supplies": 2780000,
-	  "Tires_and_Tubes": 26000,
+	  "Tires_and_Tubes": 260000,
 	  "Diesel_Fuel": 1400000,
 	  "OS_Rental": 42000,
 	  "OS_Other": 1280000,
-	  "OS_Maintenance": 21000
+	  "OS_Maintenance": 210000
 	},
 	"Metrogro_Farm_Ag": {
 	  "Materials_and_Supplies":0,

@@ -21,6 +21,7 @@ QStringList ExpressionCalculator::infixToPostfix(const T* variables) {
     QStringList output;
     QRegularExpression tokenRegex(R"([A-Za-z_:][A-Za-z0-9_:]*|\d+(\.\d+)?|[\+\-\*/\^\(\)])");
 
+
     QRegularExpressionMatchIterator it = tokenRegex.globalMatch(*this);
     while (it.hasNext()) {
         QRegularExpressionMatch match = it.next();
@@ -153,7 +154,8 @@ double ExpressionCalculator::evaluatePostfix(const QStringList& postfix, const T
         }
         // If token is an operator
         else if (token.length() == 1 && QString("+-*/^").contains(token)) {
-            if (stack.size() < 2) throw std::runtime_error("Invalid expression");
+            if (stack.size() < 2)
+                throw std::runtime_error("Invalid expression");
 
             double b = stack.pop();
             double a = stack.pop();
@@ -161,7 +163,8 @@ double ExpressionCalculator::evaluatePostfix(const QStringList& postfix, const T
         }
     }
 
-    if (stack.size() != 1) throw std::runtime_error("Invalid expression");
+    if (stack.size() != 1)
+        throw std::runtime_error("Invalid expression");
     return stack.top();
 }
 
@@ -198,7 +201,8 @@ inline double ExpressionCalculator::evaluatePostfix(const AquaArray* array, cons
         }
         // If token is an operator
         else if (token.length() == 1 && QString("+-*/^").contains(token)) {
-            if (stack.size() < 2) throw std::runtime_error("Invalid expression");
+            if (stack.size() < 2)
+                throw std::runtime_error("Invalid expression");
 
             double b = stack.pop();
             double a = stack.pop();
@@ -206,7 +210,8 @@ inline double ExpressionCalculator::evaluatePostfix(const AquaArray* array, cons
         }
     }
 
-    if (stack.size() != 1) throw std::runtime_error("Invalid expression");
+    if (stack.size() != 1)
+        throw std::runtime_error("Invalid expression");
     return stack.top();
 }
 

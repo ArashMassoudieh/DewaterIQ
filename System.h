@@ -26,8 +26,33 @@ public:
     // Eval Function for "x.y.z"
     double Eval(const QString& expression) const {
         QStringList keys = expression.split(':'); // Split into ["x", "y", "z"]
-        if (keys.size() != 3) {
-            throw std::invalid_argument("Invalid format for System. Use 'key1.key2.key3'");
+        if (keys.size()==1)
+        {
+            if (!this->contains(keys[0])) {
+                throw std::out_of_range(QString("Key '%1' not found").arg(keys[0]).toStdString());
+                return 0;
+            }
+            else
+            {
+                return operator[](keys[0]).sumTotal();
+            }
+        }
+
+        if (keys.size()==2)
+        {
+            if (!this->contains(keys[0])) {
+                throw std::out_of_range(QString("Key '%1' not found").arg(keys[0]).toStdString());
+                return 0;
+                if (!this->operator[](keys[0]).contains(keys[1]))
+                {
+                    throw std::out_of_range(QString("Key '%1' not found").arg(keys[1]).toStdString());
+                    return 0;
+                }
+            }
+            else
+            {
+                return operator[](keys[0]).sumKeys(keys[1]);
+            }
         }
 
         QString key1 = keys[0];
@@ -56,6 +81,7 @@ public:
     bool readFromJsonFile(const QString& filename);
     
     double Calculate(const QString& expression) const;
+    AquaArray Calculate(const QVector<AquaArray>* array, const QString& expression);
 
     bool contains(const QString& variable) const;
 

@@ -24,7 +24,7 @@ AquaTable::~AquaTable() {
     // No explicit cleanup needed unless AquaArray has dynamic memory
 }
 
-bool AquaTable::AppendSequence(const double &x_min, const double &x_max, const unsigned int &number_of_intervals, sequencemode mode)
+bool AquaTable::AppendSequence(const QString &columnname, const double &x_min, const double &x_max, const unsigned int &number_of_intervals, sequencemode mode)
 {
     clear();
 
@@ -37,7 +37,7 @@ bool AquaTable::AppendSequence(const double &x_min, const double &x_max, const u
             tobeadded.append(exp(log(x_min) + (log(x_max)-log(x_min))/double(number_of_intervals)*i));
         append(tobeadded);
     }
-
+    columnnames.append(columnname);
     return true;
 }
 

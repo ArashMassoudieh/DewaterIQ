@@ -20,7 +20,7 @@ public:
     // Destructor
     ~AquaTable();
 
-    bool AppendSequence(const double &x_min, const double &x_max, const unsigned int &number_of_intervals, sequencemode mode=sequencemode::linear);
+    bool AppendSequence(const QString &columnname, const double &x_min, const double &x_max, const unsigned int &number_of_intervals, sequencemode mode=sequencemode::linear);
     bool AppendColumn(const QString &columnname, const AquaArray &column);
 
     QStringList ColumnNames() {return columnnames;}

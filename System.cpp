@@ -91,8 +91,9 @@ bool System::contains(const QString& variable) const
     if (terms.count() == 2)
         outcome = outcome && (value(terms[0]).contains(terms[1]) || begin()->contains(variable));
     else if (terms.count() == 3)
-        outcome = outcome && (value(terms[0]).contains(terms[1]) && begin()->value(terms[1]).contains(terms[2]) );
-
+    {
+        outcome = outcome && (value(terms[0]).contains(terms[1]) && value(terms[0]).value(terms[1]).contains(terms[2]));
+    }
     return outcome; 
 }
 
@@ -118,5 +119,24 @@ bool System::InsertScalar(const QString &VariableName, const double& value)
     DataStructure data;
     data["value"]["value"] = value;
     operator[](VariableName) = data;
+    return true;
+}
+
+bool System::InsertVector(const QString &MapName, const QStringList &VariableNames, const QVector<double>& values)
+{
+    if (VariableNames.size()!=values.size())
+    {
+        throw std::runtime_error("Variables and Variable Names must have the same size");
+        return false;
+    }
+    if (contains(MapName))
+    {
+        throw std::runtime_error(("Data Structure " + MapName + " already exists").toStdString() );
+        return false;
+    }
+    DataStructure data;
+    for (int i=0; i<values.size(); i++)
+        data["value"][VariableNames[i]] = values[i];
+    operator[](MapName) = data;
     return true;
 }

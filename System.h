@@ -88,4 +88,5 @@ public:
     int level(const QString& item) const;
     
     bool InsertScalar(const QString &VariableName, const double& value);
+    bool InsertVector(const QString &MapName, const QStringList &VariableNames, const QVector<double>& values);
 };

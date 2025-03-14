@@ -68,10 +68,10 @@ int main(int argc, char *argv[])
     TotalRRExpenses.AppendColumn("Additional_Expenses",AdditionalExpense);
     AquaArray TotalExpenses = system.Calculate(&TotalRRExpenses,"x6+x7+x8");
     TotalRRExpenses.AppendColumn("Total_RRR_Variable_Expenses",TotalExpenses);
-    TotalRRExpenses.WritetoCSV("../../RRexpenses.csv");
-    TotalRRExpenses.WritetoJson("../../RRexpenses.json");
+    TotalRRExpenses.WritetoCSV("RRexpenses.csv");
+    TotalRRExpenses.WritetoJson("RRexpenses.json");
     AquaTable TotalRRExpensesLoaded;
-    TotalRRExpensesLoaded.ReadFromJson("../../RRexpenses.json");
+    TotalRRExpensesLoaded.ReadFromJson("RRexpenses.json");
     qDebug()<<"Finished";
 
 }

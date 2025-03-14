@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trigger AWS Program</title>
+    <script>
+	    function triggerProgram() {
+		fetch("http://ec2-34-215-213-124.us-west-2.compute.amazonaws.com:5000/run-program", { 
+		    method: "POST" 
+		})
+		.then(response => {
+		    console.log("Raw Response:", response);
+		    return response.json();  // Ensure response is JSON
+		})
+		.then(data => {
+		    console.log("Parsed Data:", data);
+		    document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+		})
+		.catch(error => {
+		    console.error("Fetch Error:", error);
+		    document.getElementById("output").innerText = "Error triggering program.";
+		});
+	    }
+	</script>
+
+</head>
+<body>
+    <h2>Run Program on AWS</h2>
+    <button onclick="triggerProgram()">Run Program</button>
+    <pre id="output"></pre>
+</body>
+</html>
+

@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route('/run-program', methods=['POST'])
 def run_program():
     try:
-        result = subprocess.run(["/home/ubuntu/your-program"], capture_output=True, text=True)
+        result = subprocess.run(["/home/ubuntu/DewaterIQ/DewaterIQ"], capture_output=True, text=True)
         return {"status": "success", "output": result.stdout}
     except Exception as e:
         return {"status": "error", "message": str(e)}, 500

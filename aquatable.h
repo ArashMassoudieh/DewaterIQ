@@ -2,6 +2,7 @@
 #define AQUATABLE_H
 
 #include "AquaArray.h"
+#include <QStringList>
 
 class DataStructure;
 

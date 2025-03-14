@@ -1,4 +1,5 @@
 #include "AquaArray.h"
+#include <cmath>
 
 bool AquaArray::CreateSequence(const double &x_min, const double &x_max, const unsigned int &number_of_intervals, sequencemode mode)
 {

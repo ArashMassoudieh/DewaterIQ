@@ -32,7 +32,7 @@ bool System::WritetoJsonFile (const QString &filename) const
     QFile file(filename);
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug() << "Failed to open file for writing:" << filename;
+        //qDebug() << "Failed to open file for writing:" << filename;
         return false;
     }
 
@@ -46,7 +46,7 @@ bool System::readFromJsonFile(const QString& filename) {
 
     // Open the file
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "Failed to open file:" << filename;
+        //qDebug() << "Failed to open file:" << filename;
         return false;
     }
 
@@ -57,7 +57,7 @@ bool System::readFromJsonFile(const QString& filename) {
     // Parse the JSON content
     QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
     if (jsonDoc.isNull() || !jsonDoc.isObject()) {
-        qDebug() << "Invalid JSON format in file:" << filename;
+        //qDebug() << "Invalid JSON format in file:" << filename;
         return false;
     }
 

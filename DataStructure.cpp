@@ -49,7 +49,7 @@ bool DataStructure::readFromJsonFile(const QString& filename) {
 
     // Open the file
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "Failed to open file:" << filename;
+        //qDebug() << "Failed to open file:" << filename;
         return false;
     }
 
@@ -60,7 +60,7 @@ bool DataStructure::readFromJsonFile(const QString& filename) {
     // Parse the JSON content
     QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
     if (jsonDoc.isNull() || !jsonDoc.isObject()) {
-        qDebug() << "Invalid JSON format in file:" << filename;
+        //qDebug() << "Invalid JSON format in file:" << filename;
         return false;
     }
 
@@ -124,7 +124,7 @@ QJsonDocument DataStructure::toJsonDocument() const {
 
 double DataStructure::sumSubkeys(const QString& key) const {
     if (!this->contains(key)) {
-        qDebug() << "Key not found:" << key;
+        //qDebug() << "Key not found:" << key;
         return 0;
     }
 
@@ -179,7 +179,7 @@ bool DataStructure::writeToJsonFile(const QString& filename) const {
     QFile file(filename);
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug() << "Failed to open file for writing:" << filename;
+        //qDebug() << "Failed to open file for writing:" << filename;
         return false;
     }
 
@@ -239,14 +239,14 @@ bool DataStructure::Validate() const
 {
     if (NumberOfRows() == -1)
     {
-        qDebug() << "Number of rows are different";
+        //qDebug() << "Number of rows are different";
         return false;
     }
     QStringList rowHeaders = RowHeaders(); 
     
     if (rowHeaders.size() == 0)
     {
-        qDebug() << "Row names are different! ";
+        //qDebug() << "Row names are different! ";
         return false;
     }
     return true; 
@@ -258,12 +258,12 @@ bool DataStructure::appendColumn(const QString& columnname, AquaArray& array, co
 {
     if (array.count() != NumberOfRows() && NumberOfRows() != 0)
     {
-        qDebug() << "Number of array element is different than the number of rows.";
+        //qDebug() << "Number of array element is different than the number of rows.";
         return false;
     }
     if (rownames.count()!=0 && rownames.count()!=array.count())
     {
-        qDebug() << "Number of array element is different than the number of names provided.";
+        //qDebug() << "Number of array element is different than the number of names provided.";
         return false; 
     }
     int i = 0; 
@@ -294,7 +294,7 @@ QStringList DataStructure::RowHeaders() const
             out = Map.keys();
         else
         {
-            qDebug() << "Row names are different";
+            //qDebug() << "Row names are different";
             return QStringList();
         }
     }
@@ -308,7 +308,7 @@ bool DataStructure::writeToCSVFile(const QString& filename) const
 
     // Attempt to open the file in write-only and text mode.
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug() << "Error: Unable to open file for writing:" << file.errorString();
+        //qDebug() << "Error: Unable to open file for writing:" << file.errorString();
         return false;
     }
 
@@ -340,7 +340,7 @@ bool DataStructure::appendRow(const QString& rowname, AquaArray& array)
 {
     if (array.count() != NumberOfColumns() && NumberOfRows() != 0)
     {
-        qDebug() << "Number of array element is different than the number of columns.";
+        //qDebug() << "Number of array element is different than the number of columns.";
         return false;
     }
     
@@ -357,7 +357,7 @@ bool DataStructure::appendColumn(const QString& columnname, AquaArray& array)
 {
     if (array.count() != NumberOfRows() && NumberOfColumns() != 0)
     {
-        qDebug() << "Number of array element is different than the number of columns.";
+        //qDebug() << "Number of array element is different than the number of columns.";
         return false;
     }
 
@@ -390,7 +390,7 @@ unsigned int DataStructure::NumberOfRows() const
         }
         else
         {
-            qDebug() << "Number of rows are different"; 
+            //qDebug() << "Number of rows are different";
             return -1; 
         }
     }

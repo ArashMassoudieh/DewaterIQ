@@ -4,6 +4,7 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <cmath>
 
 // Default Constructor
 AquaTable::AquaTable() : QVector<AquaArray>() {}

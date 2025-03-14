@@ -57,4 +57,8 @@ build/Debug/
 
 build/Release/
 
+DewaterIQ
+
+Makefile
+
 *.csv#

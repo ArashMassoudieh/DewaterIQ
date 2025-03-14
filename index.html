@@ -5,24 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trigger AWS Program</title>
     <script>
-	    function triggerProgram() {
-		fetch("http://ec2-34-215-213-124.us-west-2.compute.amazonaws.com:5000/run-program", { 
-		    method: "POST" 
-		})
-		.then(response => {
-		    console.log("Raw Response:", response);
-		    return response.json();  // Ensure response is JSON
-		})
-		.then(data => {
-		    console.log("Parsed Data:", data);
-		    document.getElementById("output").innerText = JSON.stringify(data, null, 2);
-		})
-		.catch(error => {
-		    console.error("Fetch Error:", error);
-		    document.getElementById("output").innerText = "Error triggering program.";
-		});
-	    }
-	</script>
+    function triggerProgram() {
+        fetch("http://your-ec2-ip:5000/run-program", { 
+            method: "POST" 
+        })
+        .then(response => {
+            console.log("Raw Response:", response);
+            return response.json();  // Ensure response is JSON
+        })
+        .then(data => {
+            console.log("Parsed Data:", data);
+            document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+        })
+        .catch(error => {
+            console.error("Fetch Error:", error);
+            document.getElementById("output").innerText = "Error triggering program.";
+        });
+    }
+</script>
+
 
 </head>
 <body>

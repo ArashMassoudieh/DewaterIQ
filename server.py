@@ -12,21 +12,25 @@ PROGRAM_PATH = "/home/ubuntu/DewaterIQ/DewaterIQ"  # Update this with your actua
 def run_program():
     """Execute the C++ program and return its output"""
     try:
-        print(f"Executing: {PROGRAM_PATH}")  # Debugging print
+        print(f"Executing program: {PROGRAM_PATH}")  # Log execution
         result = subprocess.run([PROGRAM_PATH], capture_output=True, text=True)
 
-        print("STDOUT:", result.stdout)  # Debugging print
-        print("STDERR:", result.stderr)  # Debugging print
+        print("STDOUT:", result.stdout)  # Log standard output
+        print("STDERR:", result.stderr)  # Log standard error
+        print("Return Code:", result.returncode)  # Log exit code
 
-        return jsonify({
+        response = {
             "status": "success",
-            "stdout": result.stdout,
-            "stderr": result.stderr,
+            "stdout": result.stdout.strip(),
+            "stderr": result.stderr.strip(),
             "return_code": result.returncode
-        })
+        }
+        print("Response:", response)  # Log what we return
+        return jsonify(response)
     except Exception as e:
-        print("Execution Error:", str(e))  # Debugging print
-        return jsonify({"status": "error", "message": str(e)}), 500
+        error_response = {"status": "error", "message": str(e)}
+        print("Execution Error:", error_response)  # Log error
+        return jsonify(error_response), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

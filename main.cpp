@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 
     double drytons = system.Eval("BudgetBasicInputs:value:DryTons");
     AquaArray Wet_Tons = system.Calculate(&TotalRRExpenses,"BudgetBasicInputs:value:DryTons/x1*100");
-    qDebug()<<Wet_Tons;
+    ////qDebug()<<Wet_Tons;
 
     TotalRRExpenses.AppendColumn("WetTons",Wet_Tons);
     AquaArray Total_RRR_OM_Variable_Expenses = system.Calculate(&TotalRRExpenses,"x2*ExpensePerTon");
@@ -73,6 +73,6 @@ int main(int argc, char *argv[])
     TotalRRExpenses.WritetoJson("json_output_files/RRexpenses.json");
     AquaTable TotalRRExpensesLoaded;
     TotalRRExpensesLoaded.ReadFromJson("RRexpenses.json");
-    std::cout<<"Finished";
+    std::cout<<"Finished"<<std::endl;
 
 }

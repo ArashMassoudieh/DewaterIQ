@@ -9,7 +9,7 @@ double ExpressionCalculator::calc(const T* variables) {
         return evaluatePostfix(postfix, variables);
     }
     catch (const std::runtime_error& e) {
-        qDebug() << "Error:" << e.what();
+        //qDebug() << "Error:" << e.what();
         return NAN; // Return NaN on error
     }
 }
@@ -86,7 +86,7 @@ QStringList ExpressionCalculator::infixToPostfix(const AquaArray *array, const T
         }
         else if (isValidXFormat(token))
         {
-            qDebug() << token.right(token.size()-1);
+            //qDebug() << token.right(token.size()-1);
             if (token.right(token.size() - 1).toInt() > array->size())
                 throw std::runtime_error(QString("Array does not have " + token.left(token.size() - 1) + " elements").toStdString());
             output << token;
@@ -188,7 +188,7 @@ inline double ExpressionCalculator::evaluatePostfix(const AquaArray* array, cons
         }
         else if (isValidXFormat(token))
         {
-            qDebug() << token.right(token.size()-1);
+            //qDebug() << token.right(token.size()-1);
             if (token.right(token.size() - 1).toInt()>array->size())
                 throw std::runtime_error(QString("Array does not have " + token.right(token.size() - 1) + " elements").toStdString());
             stack.push(array->value(token.right(token.size() - 1).toInt() - 1));
@@ -225,7 +225,7 @@ double ExpressionCalculator::calc(const AquaArray* array,  const T* variables)
         return evaluatePostfix(array, postfix, variables);
     }
     catch (const std::runtime_error& e) {
-        qDebug() << "Error:" << e.what();
+        //qDebug() << "Error:" << e.what();
         return NAN; // Return NaN on error
     }
 }
@@ -242,7 +242,7 @@ AquaArray ExpressionCalculator::calc(const QVector<AquaArray>* array, const T* v
             output.append(evaluatePostfix(&value, postfix, variables));
         }
         catch (const std::runtime_error& e) {
-            qDebug() << "Error:" << e.what();
+            //qDebug() << "Error:" << e.what();
             output.append(NAN); // Return NaN on error
         }
     }

@@ -1,8 +1,8 @@
-QT       += core gui
+QT       += core
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+#greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++17
+CONFIG += c++17 console
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -11,7 +11,6 @@ CONFIG += c++17
 SOURCES += \
     AquaArray.cpp \
     DataStructure.cpp \
-    DewaterIQ.cpp \
     ExpressionCalculator.cpp \
     System.cpp \
     aquatable.cpp \
@@ -21,15 +20,13 @@ SOURCES += \
 HEADERS += \
     AquaArray.h \
     DataStructure.h \
-    DewaterIQ.h \
     ExpressionCalculator.h \
     ExpressionCalculator.hpp \
     System.h \
     aquatable.h
 
 
-FORMS += \
-    DewaterIQ.ui
+FORMS +=
 
 
 # Default rules for deployment.

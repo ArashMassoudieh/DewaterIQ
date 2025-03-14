@@ -15,18 +15,18 @@ int main(int argc, char *argv[])
     DataStructure StepFunctionDistributionExpenses;
     DataStructure StepFunctionTransportationExpenses;
     DataStructure DiscreteAnnualCostswithDecreaseTS;
-    if (!BudgetBasicInputs.readFromJsonFile("../../BudgetBasicInputs.json"))
-        BudgetBasicInputs.readFromJsonFile("BudgetBasicInputs.json");
-    if (!TransportationCosts.readFromJsonFile("../../TransportationCosts.json"))
-        TransportationCosts.readFromJsonFile("TransportationCosts.json");
-    if (!DistributionCosts.readFromJsonFile("../../DistributionCosts.json"))
-        DistributionCosts.readFromJsonFile("DistributionCosts.json");
-    if (!StepFunctionDistributionExpenses.readFromJsonFile("../../StepFunctionDistributionCosts.json"))
-         StepFunctionDistributionExpenses.readFromJsonFile("StepFunctionDistributionCosts.json");
-    if (!StepFunctionTransportationExpenses.readFromJsonFile("../../StepFunctionTransportationCosts.json"))
-        StepFunctionTransportationExpenses.readFromJsonFile("StepFunctionTransportationCosts.json");
-    if (!DiscreteAnnualCostswithDecreaseTS.readFromJsonFile("../../DiscreteAnnualCostswithDecreaseTS.json"))
-        DiscreteAnnualCostswithDecreaseTS.readFromJsonFile("DiscreteAnnualCostswithDecreaseTS.json");
+    if (!BudgetBasicInputs.readFromJsonFile("../../json_input_files/BudgetBasicInputs.json"))
+        BudgetBasicInputs.readFromJsonFile("json_input_files/BudgetBasicInputs.json");
+    if (!TransportationCosts.readFromJsonFile("../../json_input_files/TransportationCosts.json"))
+        TransportationCosts.readFromJsonFile("json_input_files/TransportationCosts.json");
+    if (!DistributionCosts.readFromJsonFile("../../json_input_files/DistributionCosts.json"))
+        DistributionCosts.readFromJsonFile("json_input_files/DistributionCosts.json");
+    if (!StepFunctionDistributionExpenses.readFromJsonFile("../../json_input_files/StepFunctionDistributionCosts.json"))
+         StepFunctionDistributionExpenses.readFromJsonFile("json_input_files/StepFunctionDistributionCosts.json");
+    if (!StepFunctionTransportationExpenses.readFromJsonFile("../../json_input_files/StepFunctionTransportationCosts.json"))
+        StepFunctionTransportationExpenses.readFromJsonFile("json_input_files/StepFunctionTransportationCosts.json");
+    if (!DiscreteAnnualCostswithDecreaseTS.readFromJsonFile("../../json_input_files/DiscreteAnnualCostswithDecreaseTS.json"))
+        DiscreteAnnualCostswithDecreaseTS.readFromJsonFile("json_input_files/DiscreteAnnualCostswithDecreaseTS.json");
     system["BudgetBasicInputs"] = BudgetBasicInputs;
     system["TransporationCosts"] = TransportationCosts;
     system["DistributionCosts"] = DistributionCosts;
@@ -69,8 +69,8 @@ int main(int argc, char *argv[])
     TotalRRExpenses.AppendColumn("Additional_Expenses",AdditionalExpense);
     AquaArray TotalExpenses = system.Calculate(&TotalRRExpenses,"x6+x7+x8");
     TotalRRExpenses.AppendColumn("Total_RRR_Variable_Expenses",TotalExpenses);
-    TotalRRExpenses.WritetoCSV("RRexpenses.csv");
-    TotalRRExpenses.WritetoJson("RRexpenses.json");
+    TotalRRExpenses.WritetoCSV("json_output_files/RRexpenses.csv");
+    TotalRRExpenses.WritetoJson("json_output_files/RRexpenses.json");
     AquaTable TotalRRExpensesLoaded;
     TotalRRExpensesLoaded.ReadFromJson("RRexpenses.json");
     std::cout<<"Finished";

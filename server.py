@@ -1,21 +1,28 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-import subprocess
+from flask import Flask, jsonify, send_file
+import os
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for cross-origin requests
 
-@app.route('/run-program', methods=['POST'])
-def run_program():
+# Define the folder where JSON files are stored
+JSON_FOLDER = "/home/ubuntu/DewaterIQ/json_output_files"
+
+@app.route('/list-json', methods=['GET'])
+def list_json_files():
+    """List all JSON files in the directory"""
     try:
-        result = subprocess.run(["/home/ubuntu/DewaterIQ/DewaterIQ"], capture_output=True, text=True)
-        response = {"status": "success", "output": result.stdout}
-        print("Response:", response)  # Debug print
-        return jsonify(response)  # Ensure the response is in JSON format
+        files = [f for f in os.listdir(JSON_FOLDER) if f.endswith('.json')]
+        return jsonify({"files": files})
     except Exception as e:
-        error_response = {"status": "error", "message": str(e)}
-        print("Error:", error_response)  # Debug print
-        return jsonify(error_response), 500
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/get-json/<filename>', methods=['GET'])
+def get_json_file(filename):
+    """Serve a JSON file"""
+    file_path = os.path.join(JSON_FOLDER, filename)
+    if os.path.exists(file_path) and filename.endswith('.json'):
+        return send_file(file_path, mimetype='application/json')
+    else:
+        return jsonify({"error": "File not found"}), 404
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

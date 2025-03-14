@@ -3,6 +3,7 @@
 #include <DataStructure.h>
 #include <aquatable.h>
 #include <System.h>
+#include <iostream>
 
 int main(int argc, char *argv[])
 {
@@ -72,6 +73,6 @@ int main(int argc, char *argv[])
     TotalRRExpenses.WritetoJson("RRexpenses.json");
     AquaTable TotalRRExpensesLoaded;
     TotalRRExpensesLoaded.ReadFromJson("RRexpenses.json");
-    qDebug()<<"Finished";
+    std::cout<<"Finished";
 
 }

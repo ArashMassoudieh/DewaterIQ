@@ -2,7 +2,9 @@ from flask import Flask, jsonify, send_file, request
 import os
 import subprocess
 
+from flask_cors import CORS
 app = Flask(__name__)
+CORS(app)  # Allow cross-origin requests
 
 # Define the folder where JSON files are stored
 JSON_FOLDER = "/home/ubuntu/DewaterIQ/json_output_files"

@@ -10,6 +10,7 @@
 class DataStructure;
 class System;
 class AquaArray;
+class AquaTable;
 
 double hsd(double x);
 double floor(double x);
@@ -85,7 +86,7 @@ public:
     double calc(const AquaArray* array, const T* variables);
 
     template<typename T>
-    AquaArray calc(const QVector<AquaArray>* array, const T* variables);
+    AquaArray calc(const AquaTable* array, const T* variables);
 
     template <typename T>
     double evaluatePostfix(const AquaArray* array, const QStringList& postfix, const T* variables);
@@ -99,6 +100,8 @@ public:
         QRegularExpression regex("^x\\d+$");
         return regex.match(str).hasMatch();
     }
+private:
+    QStringList AquaTableVariableNames;
 
 };
 

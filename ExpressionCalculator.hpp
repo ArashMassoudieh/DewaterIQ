@@ -1,6 +1,7 @@
 #pragma once
 #include "ExpressionCalculator.h"
 #include "AquaArray.h"
+#include "aquatable.h"
 
 template <typename T>
 double ExpressionCalculator::calc(const T* variables) {
@@ -86,10 +87,13 @@ QStringList ExpressionCalculator::infixToPostfix(const AquaArray *array, const T
         }
         else if (isValidXFormat(token))
         {
-            qDebug() << token.right(token.size()-1);
             if (token.right(token.size() - 1).toInt() > array->size())
                 throw std::runtime_error(QString("Array does not have " + token.left(token.size() - 1) + " elements").toStdString());
             output << token;
+        }
+        else if (AquaTableVariableNames.contains(token))
+        {
+            output<<token;
         }
         // Functions (sin, cos, log, etc.)
         else if (functions.contains(token)) {
@@ -193,6 +197,12 @@ inline double ExpressionCalculator::evaluatePostfix(const AquaArray* array, cons
                 throw std::runtime_error(QString("Array does not have " + token.right(token.size() - 1) + " elements").toStdString());
             stack.push(array->value(token.right(token.size() - 1).toInt() - 1));
         }
+        else if (AquaTableVariableNames.contains(token))
+        {
+            qDebug() << token.right(token.size()-1);
+            int column_no = AquaTableVariableNames.indexOf(token);
+            stack.push(array->value(column_no));
+        }
         // If token is a function (sin, log, etc.)
         else if (functions.contains(token)) {
             if (stack.isEmpty()) throw std::runtime_error("Invalid function usage");
@@ -231,9 +241,10 @@ double ExpressionCalculator::calc(const AquaArray* array,  const T* variables)
 }
 
 template<typename T>
-AquaArray ExpressionCalculator::calc(const QVector<AquaArray>* array, const T* variables)
+AquaArray ExpressionCalculator::calc(const AquaTable* array, const T* variables)
 {
     AquaArray output;
+    AquaTableVariableNames = array->ColumnNames();
     for (int i = 0; i < array->size(); i++)
     {
         try {

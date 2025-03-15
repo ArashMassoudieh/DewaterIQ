@@ -1,8 +1,10 @@
-QT       += core
+QT       += core websockets
 
 #greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17 console
+
+DEFINES += USE_WEBSOCKETS
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -15,6 +17,8 @@ SOURCES += \
     System.cpp \
     aquatable.cpp \
     main.cpp \
+    websocketserver.cpp \
+    wholisticdewateringcalculator.cpp
 
 
 HEADERS += \
@@ -23,7 +27,9 @@ HEADERS += \
     ExpressionCalculator.h \
     ExpressionCalculator.hpp \
     System.h \
-    aquatable.h
+    aquatable.h \
+    websocketserver.h \
+    wholisticdewateringcalculator.h
 
 
 FORMS +=

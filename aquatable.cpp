@@ -100,7 +100,7 @@ bool AquaTable::WritetoCSV(const QString &filename)
 }
 
 // Function to write AquaTable data to a JSON file
-bool AquaTable::WritetoJson(const QString &filename)
+bool AquaTable::WritetoJson(const QString &filename) const
 {
     if (count()==0)
         return false;
@@ -110,6 +110,14 @@ bool AquaTable::WritetoJson(const QString &filename)
     if (!file.open(QIODevice::WriteOnly))
         return false; // File could not be opened
 
+    QJsonDocument doc = toJson();
+    file.write(doc.toJson(QJsonDocument::Indented));
+    file.close();
+    return true;
+}
+
+QJsonDocument AquaTable::toJson() const
+{
     QJsonObject root;
     // Iterate over rows and convert to JSON
     for (int j=0; j<begin()->count(); j++) {
@@ -124,9 +132,8 @@ bool AquaTable::WritetoJson(const QString &filename)
 
     // Create the JSON document
     QJsonDocument doc(root);
-    file.write(doc.toJson(QJsonDocument::Indented));
-    file.close();
-    return true;
+
+    return doc;
 }
 
 // Function to read an AquaTable from a JSON file

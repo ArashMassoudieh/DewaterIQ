@@ -3,6 +3,7 @@
 
 #include "AquaArray.h"
 #include <QStringList>
+#include <QJsonDocument>
 
 class DataStructure;
 
@@ -26,7 +27,8 @@ public:
 
     QStringList ColumnNames() const {return columnnames;}
     bool WritetoCSV(const QString &filename);
-    bool WritetoJson(const QString &filename);
+    bool WritetoJson(const QString &filename) const;
+    QJsonDocument toJson() const;
     bool ReadFromJson(const QString &filename);
     DataStructure toDataStructure(bool rownamesfromfirstcolumn = true);
 private:

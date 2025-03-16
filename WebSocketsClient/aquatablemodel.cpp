@@ -1,8 +1,15 @@
 #include "aquatablemodel.h"
 
-AquaTableModel::AquaTableModel(AquaTable *table, QObject *parent)
-    : QAbstractTableModel(parent), m_table(table)
+AquaTableModel::AquaTableModel(AquaTable *table, const QStringList &columns, QObject *parent)
+    : QAbstractTableModel(parent)
 {
+    m_table = new AquaTable();
+    for (int i=0; i<columns.count(); i++)
+    {
+        if (table->ColumnNames().contains(columns[i]))
+            m_table->AppendColumn(columns[i],table->GetColumn(columns[i]));
+    }
+
 }
 
 int AquaTableModel::rowCount(const QModelIndex &parent) const
@@ -31,7 +38,8 @@ QVariant AquaTableModel::data(const QModelIndex &index, int role) const
 
     if (index.row() < m_table->size() && index.column() < m_table->at(index.column()).size())
     {
-        return m_table->at(index.row()).at(index.column()); // Return the value at (row, col)
+        //return m_table->at(index.row()).at(index.column()); // Return the value at (row, col)
+        return QLocale(QLocale::English).toString(m_table->at(index.row()).at(index.column()), 'f', 1);
     }
 
     return QVariant();
@@ -74,7 +82,7 @@ Qt::ItemFlags AquaTableModel::flags(const QModelIndex &index) const
     if (!index.isValid())
         return Qt::NoItemFlags;
 
-    return Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled;
+    return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
 
 void AquaTableModel::updateTable()

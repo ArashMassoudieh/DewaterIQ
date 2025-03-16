@@ -4,7 +4,7 @@ QT       += core websockets
 
 CONFIG += c++17 console
 
-DEFINES += USE_WEBSOCKETS
+#DEFINES += USE_WEBSOCKETS
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.

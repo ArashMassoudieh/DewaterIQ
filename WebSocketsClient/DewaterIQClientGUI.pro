@@ -1,8 +1,9 @@
-QT = core websockets gui widgets
+QT = core websockets gui widgets charts
 
 CONFIG += c++17
-
 CONFIG -= thread
+
+DEFINES += DESKTOP #WASM
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -11,6 +12,7 @@ CONFIG -= thread
 SOURCES += \
         ../AquaArray.cpp \
         ../aquatable.cpp \
+        aquaplotter.cpp \
         aquatablemodel.cpp \
         main_GUI.cpp \
         mainform.cpp \
@@ -24,6 +26,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     ../AquaArray.h \
     ../aquatable.h \
+    aquaplotter.h \
     aquatablemodel.h \
     mainform.h \
     websocketclient.h
@@ -33,5 +36,4 @@ INCLUDEPATH += ../
 FORMS += \
     mainform.ui
 
-
-QMAKE_LFLAGS += "-sDISABLE_EXCEPTION_CATCHING=0"
+contains(DEFINES, WASM): QMAKE_LFLAGS += "-sDISABLE_EXCEPTION_CATCHING=0"

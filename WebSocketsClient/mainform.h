@@ -1,18 +1,19 @@
 #ifndef MAINFORM_H
 #define MAINFORM_H
 
-#include <QDialog>
+#include <QMainWindow>
 #include "aquatable.h"
 #include "aquatablemodel.h"
 
 
 class QTableView;
+class AquaPlotter;
 
 namespace Ui {
 class MainForm;
 }
 
-class MainForm : public QDialog
+class MainForm : public QMainWindow
 {
     Q_OBJECT
 
@@ -26,6 +27,7 @@ private:
     AquaTableModel *tablemodel = nullptr;
     AquaTable *table = nullptr;
     QTableView *tableviewer = nullptr;
+    AquaPlotter *chart = nullptr;
 public slots:
     void onTextMessageRecieved(const QString &msg);
 };

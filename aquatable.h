@@ -24,7 +24,7 @@ public:
 
     bool AppendSequence(const QString &columnname, const double &x_min, const double &x_max, const unsigned int &number_of_intervals, sequencemode mode=sequencemode::linear);
     bool AppendColumn(const QString &columnname, const AquaArray &column);
-
+    AquaArray GetColumn(const QString &columnname);
     QStringList ColumnNames() const {return columnnames;}
     bool WritetoCSV(const QString &filename);
     bool WritetoJson(const QString &filename) const;

@@ -71,6 +71,25 @@ bool AquaTable::AppendColumn(const QString &columnname, const AquaArray &column)
     return true;
 }
 
+AquaArray AquaTable::GetColumn(const QString &columnname)
+{
+    AquaArray out;
+    if (!ColumnNames().contains(columnname))
+        return out;
+    if (ColumnNames().size()==0)
+        return out;
+    int columnnumber = -1;
+    for (int i = 0; i<begin()->size(); i++)
+    {
+        if (ColumnNames()[i]==columnname) columnnumber = i;
+    }
+    for (int i = 0; i<size(); i++)
+    {
+        out.append(at(i).at(columnnumber));
+    }
+    return out;
+}
+
 // Function to write AquaTable data to a CSV file
 bool AquaTable::WritetoCSV(const QString &filename)
 {

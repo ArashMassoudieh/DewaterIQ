@@ -71,3 +71,5 @@ void WebSocketServer::sendMessageToClient(QWebSocket *client, const QString &mes
         qDebug() << "Sent message to client:" << message;
     }
 }
+
+

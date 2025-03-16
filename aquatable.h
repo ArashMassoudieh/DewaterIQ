@@ -30,6 +30,7 @@ public:
     bool WritetoJson(const QString &filename) const;
     QJsonDocument toJson() const;
     bool ReadFromJson(const QString &filename);
+    bool FromJsonString(const QString &jsonString);
     DataStructure toDataStructure(bool rownamesfromfirstcolumn = true);
 private:
     QStringList columnnames;

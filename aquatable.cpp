@@ -193,4 +193,54 @@ bool AquaTable::ReadFromJson(const QString &filename)
     return true;
 }
 
+// Function to read an AquaTable from a JSON file
+bool AquaTable::FromJsonString(const QString &jsonString)
+{
+
+    QJsonDocument doc = QJsonDocument::fromJson(jsonString.toUtf8());
+    if (doc.isNull() || !doc.isObject()) {
+        return false; // Invalid JSON format
+    }
+
+    QJsonObject root = doc.object();
+    if (root.isEmpty()) {
+        return false; // No data found
+    }
+
+    clear(); // Clear existing data
+
+    // Extract column names from JSON keys
+    columnnames = root.keys();
+    if (columnnames.isEmpty()) {
+        return false; // No valid data
+    }
+
+    int numRows = 0;
+    QVector<QJsonArray> columns;
+
+    // Determine the number of rows and store column data
+    for (const QString &key : columnnames) {
+        QJsonArray jsonArray = root[key].toArray();
+        columns.append(jsonArray);
+        if (jsonArray.size() > numRows) {
+            numRows = jsonArray.size();
+        }
+    }
+
+    // Populate AquaTable with data
+    for (int i = 0; i < numRows; ++i) {
+        AquaArray row;
+        for (int j = 0; j < columns.size(); ++j) {
+            if (i < columns[j].size()) {
+                row.append(columns[j][i].toDouble());
+            } else {
+                row.append(0.0); // Fill missing values with 0.0
+            }
+        }
+        append(row);
+    }
+
+    return true;
+}
+
 

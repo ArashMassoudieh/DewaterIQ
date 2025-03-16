@@ -6,7 +6,7 @@ AquaPlotter::AquaPlotter(QWidget *parent)
 {
     setRenderHint(QPainter::Antialiasing);  // Enable smooth rendering
     setChart(chart);
-    chart->setTitle("AquaPlotter - Multiple Line Series");
+    chart->setTitle("");
     chart->legend()->setAlignment(Qt::AlignBottom);
 }
 
@@ -19,7 +19,7 @@ void AquaPlotter::setData(const QMap<QString,QPair<AquaArray,AquaArray>> &dataSe
 
 void AquaPlotter::updatePlot() {
     if (data.isEmpty()) return;  // No data? Exit
-
+    chart->setTitle(PlotParameters.Title);
     // Set axis ranges dynamically
     double minX = data.begin()->first.first() , maxX = data.begin()->first.last();
     double minY = data.begin()->second.first(), maxY = data.begin()->second.first();
@@ -49,12 +49,12 @@ void AquaPlotter::updatePlot() {
 
     // Create axes
     QValueAxis *axisX = new QValueAxis();
-    axisX->setTitleText("X Axis");
+    axisX->setTitleText(PlotParameters.X_axis_title);
     axisX->setRange(minX, maxX);
     chart->addAxis(axisX, Qt::AlignBottom);
 
     QValueAxis *axisY = new QValueAxis();
-    axisY->setTitleText("Y Axis");
+    axisY->setTitleText(PlotParameters.Y_axis_title);
     axisY->setRange(minY, maxY);
     chart->addAxis(axisY, Qt::AlignLeft);
 

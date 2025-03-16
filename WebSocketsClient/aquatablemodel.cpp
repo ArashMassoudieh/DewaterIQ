@@ -7,8 +7,15 @@ AquaTableModel::AquaTableModel(AquaTable *table, const QStringList &columns, QOb
     for (int i=0; i<columns.count(); i++)
     {
         if (table->ColumnNames().contains(columns[i]))
-            m_table->AppendColumn(columns[i],table->GetColumn(columns[i]));
+            m_table->AppendColumn(table->Aliases()[i],table->GetColumn(columns[i]));
     }
+
+}
+
+AquaTableModel::AquaTableModel(AquaTable *table, QObject *parent)
+    : QAbstractTableModel(parent)
+{
+    m_table = table;
 
 }
 
@@ -52,7 +59,10 @@ QVariant AquaTableModel::headerData(int section, Qt::Orientation orientation, in
 
     if (orientation == Qt::Horizontal)  // Column headers
     {
-        return m_table->ColumnNames().at(section);
+        if (section < m_table->Aliases().count())
+            return m_table->Aliases()[section];
+        else
+            return m_table->ColumnNames().at(section);
     }
     else if (orientation == Qt::Vertical)  // Row numbers
     {

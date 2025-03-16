@@ -57,10 +57,20 @@ void MainForm::onTextMessageRecieved(const QString &msg)
         columns_to_be_shown<<"Dewatered_Cake_TS_Percent";
         columns_to_be_shown<<"WetTons";
         columns_to_be_shown<<"Total_RRnR_OnM_Variable_Expenses";
-        columns_to_be_shown<<"WetTons";
-        columns_to_be_shown<<"TotalEmulsionPolymerCost";
+        columns_to_be_shown<<"Total_Cost_Emulsion";
+        columns_to_be_shown<<"Total_Cost_Dry";
 
-        tablemodel = new AquaTableModel(table,columns_to_be_shown);
+        QStringList aliases;
+        aliases << "Dewatered Cake TS (%)";
+        aliases << "Wet Tons";
+        aliases << "Total RR&R O&M Variable Expenses";
+        aliases << "Total Emulsion Cost";
+        aliases << "Total Dry Cost";
+
+        AquaTable *extracted_columns = new AquaTable(table->Extract(columns_to_be_shown));
+
+        extracted_columns->SetColumnAliases(aliases);
+        tablemodel = new AquaTableModel(extracted_columns);
         tableviewer->setModel(tablemodel);
         tableviewer->resizeColumnsToContents();
 
@@ -74,7 +84,11 @@ void MainForm::onTextMessageRecieved(const QString &msg)
         y_value = table->GetColumn("Total_Cost_Dry");
         xy = QPair(x_value,y_value);
         dataSeries["TotalDryPolymerCost"] = xy;
-
+        plot_parameters chartparameters;
+        chartparameters.Title = "Wholistic Dewatering Cost Analysis";
+        chartparameters.X_axis_title = "Dewatered Cake TS (%)";
+        chartparameters.Y_axis_title = "Cost ($)";
+        chart->setPlotParameters(chartparameters);
         chart->setData(dataSeries);
         chart->update();
 

@@ -10,7 +10,12 @@
 
 //QT_CHARTS_USE_NAMESPACE  // Required for Qt Charts
 
-
+struct plot_parameters
+{
+    QString X_axis_title;
+    QString Y_axis_title;
+    QString Title;
+};
 
 class AquaPlotter : public QChartView {
     Q_OBJECT
@@ -20,11 +25,11 @@ public:
 
     // Set multiple data series
     void setData(const QMap<QString,QPair<AquaArray,AquaArray>> &dataSeries);
-
+    void setPlotParameters(const plot_parameters &params) {PlotParameters = params;}
 private:
     QChart *chart;  // Main chart object
     QMap<QString,QPair<AquaArray,AquaArray>> data;  // Data storage
-
+    plot_parameters PlotParameters;
     void updatePlot();  // Function to refresh plot
 };
 

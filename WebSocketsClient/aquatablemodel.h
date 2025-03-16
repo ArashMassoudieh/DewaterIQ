@@ -10,7 +10,7 @@ class AquaTableModel : public QAbstractTableModel
 
 public:
     explicit AquaTableModel(AquaTable *table, const QStringList &columns, QObject *parent = nullptr);
-
+    explicit AquaTableModel(AquaTable *table, QObject *parent = nullptr);
     // Required QAbstractTableModel overrides
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;

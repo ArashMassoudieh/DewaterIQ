@@ -10,12 +10,18 @@
 AquaTable::AquaTable() : QVector<AquaArray>() {}
 
 // Copy Constructor
-AquaTable::AquaTable(const AquaTable& other) : QVector<AquaArray>(other) {}
+AquaTable::AquaTable(const AquaTable& other) : QVector<AquaArray>(other)
+{
+    columnalias = other.columnalias;
+    columnnames = other.columnnames;
+}
 
 // Assignment Operator
 AquaTable& AquaTable::operator=(const AquaTable& other) {
     if (this != &other) { // Avoid self-assignment
         QVector<AquaArray>::operator=(other); // Use QVector's assignment operator
+        columnalias = other.columnalias;
+        columnnames = other.columnnames;
     }
     return *this;
 }
@@ -89,6 +95,24 @@ AquaArray AquaTable::GetColumn(const QString &columnname)
     }
     return out;
 }
+
+AquaTable AquaTable::Extract(const QStringList &columnlist)
+{
+    AquaTable out;
+    QStringList aliases;
+    for (int i=0; i<columnlist.size(); i++)
+    {
+        if (ColumnNames().contains(columnlist[i]))
+        {
+            AquaArray array = GetColumn(columnlist[i]);
+            out.AppendColumn(columnlist[i],array);
+            aliases.append(Alias(i));
+        }
+    }
+    out.SetColumnAliases(aliases);
+    return out;
+}
+
 
 // Function to write AquaTable data to a CSV file
 bool AquaTable::WritetoCSV(const QString &filename)
@@ -260,6 +284,33 @@ bool AquaTable::FromJsonString(const QString &jsonString)
     }
 
     return true;
+}
+
+bool AquaTable::SetColumnAliases(const QStringList &aliases)
+{
+    if (aliases.count()==begin()->count() || begin()->count()==0)
+    {   columnalias = aliases;
+        return true;
+    }
+    else
+        return false;
+
+}
+
+QStringList AquaTable::Aliases() const
+{
+    return columnalias;
+}
+
+QString AquaTable::Alias(int i) const
+{
+    if (i<columnalias.size())
+        return columnalias[i];
+    else if (i<columnnames.size())
+        return columnnames[i];
+    else
+        return "";
+
 }
 
 

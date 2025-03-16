@@ -15,8 +15,8 @@ MainForm::MainForm(QWidget *parent)
 
     ui->setupUi(this);
     this->showMaximized();
-    WebSocketClient* client = new WebSocketClient(QUrl("ws://ec2-54-213-147-59.us-west-2.compute.amazonaws.com:12345"));
-    //WebSocketClient* client = new WebSocketClient(QUrl("ws://localhost:12345"));
+    //WebSocketClient* client = new WebSocketClient(QUrl("ws://ec2-54-213-147-59.us-west-2.compute.amazonaws.com:12345"));
+    WebSocketClient* client = new WebSocketClient(QUrl("ws://localhost:12345"));
     connect(client, &WebSocketClient::textMessageRecieved, this, &MainForm::onTextMessageRecieved);
     tableviewer = new QTableView(this);
     tableviewer->setStyleSheet(
@@ -66,9 +66,15 @@ void MainForm::onTextMessageRecieved(const QString &msg)
 
         QMap<QString,QPair<AquaArray,AquaArray>> dataSeries;
         AquaArray x_value = table->GetColumn("Dewatered_Cake_TS_Percent");
-        AquaArray y_value = table->GetColumn("TotalEmulsionPolymerCost");
+        AquaArray y_value = table->GetColumn("Total_Cost_Emulsion");
         QPair<AquaArray,AquaArray> xy = QPair(x_value,y_value);
         dataSeries["TotalEmulsionPolymerCost"] = xy;
+
+        x_value = table->GetColumn("Dewatered_Cake_TS_Percent");
+        y_value = table->GetColumn("Total_Cost_Dry");
+        xy = QPair(x_value,y_value);
+        dataSeries["TotalDryPolymerCost"] = xy;
+
         chart->setData(dataSeries);
         chart->update();
 

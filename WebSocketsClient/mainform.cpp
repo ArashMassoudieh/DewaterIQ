@@ -91,6 +91,8 @@ void MainForm::onTextMessageRecieved(const QString &msg)
         chartparameters.Title = "Wholistic Dewatering Cost Analysis";
         chartparameters.X_axis_title = "Dewatered Cake TS (%)";
         chartparameters.Y_axis_title = "Cost ($)";
+        chartparameters.markersymbol = QScatterSeries::MarkerShapeRectangle;
+        chartparameters.symbols = true;
         chart->setPlotParameters(chartparameters);
         chart->setData(dataSeries);
         chart->update();

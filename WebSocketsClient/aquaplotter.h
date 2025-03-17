@@ -7,6 +7,7 @@
 #include <QVector>
 #include <QPair>
 #include "AquaArray.h"
+#include <QScatterSeries>
 
 //QT_CHARTS_USE_NAMESPACE  // Required for Qt Charts
 
@@ -15,6 +16,8 @@ struct plot_parameters
     QString X_axis_title;
     QString Y_axis_title;
     QString Title;
+    bool symbols = false;
+    QScatterSeries::MarkerShape markersymbol = QScatterSeries::MarkerShapeCircle;
 };
 
 class AquaPlotter : public QChartView {

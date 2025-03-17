@@ -1,4 +1,6 @@
 #include "aquaplotter.h"
+#include <QScatterSeries>
+#include <QLegendMarker>
 
 
 AquaPlotter::AquaPlotter(QWidget *parent)
@@ -39,9 +41,19 @@ void AquaPlotter::updatePlot() {
         QLineSeries *series = new QLineSeries();
         series->setName(it.key());  // Label each series
 
+        QScatterSeries *scatterSeries;
+        if (PlotParameters.symbols)
+        {   scatterSeries = new QScatterSeries();
+            scatterSeries->setMarkerShape(PlotParameters.markersymbol); // Set shape to circle
+            scatterSeries->setMarkerSize(8.0); // Adjust the size of the circles
+            scatterSeries->setName(it.key() + " (Points)");  // Label scatter series
+        }
+
+
         for (int i=0; i<it.value().first.size(); i++) {
             series->append(it.value().first[i], it.value().second[i]);
-
+            if (PlotParameters.symbols)
+                scatterSeries->append(it.value().first[i], it.value().second[i]);
             minX = qMin(minX, it.value().first[i]);
             maxX = qMax(maxX, it.value().first[i]);
             minY = qMin(minY, it.value().second[i]);
@@ -49,7 +61,21 @@ void AquaPlotter::updatePlot() {
         }
 
         chart->addSeries(series);  // Add series to chart
+        if (PlotParameters.symbols)
+        {   chart->addSeries(scatterSeries);  // Add series to chart
+
+            QPen linePen = series->pen();  // Get the pen used for the line
+            scatterSeries->setPen(linePen);    // Apply the same pen to scatter series
+            scatterSeries->setBrush(linePen.color()); // Ensure the fill color matches
+
+            // **Remove scatter series from legend**
+            for (QLegendMarker *marker : chart->legend()->markers(scatterSeries)) {
+                marker->setVisible(false); // Hide marker for scatter points
+            }
+        }
     }
+
+
 
     // Create axes
     QValueAxis *axisX = new QValueAxis();
@@ -67,4 +93,6 @@ void AquaPlotter::updatePlot() {
         series->attachAxis(axisX);
         series->attachAxis(axisY);
     }
+
+
 }

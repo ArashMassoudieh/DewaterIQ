@@ -15,9 +15,10 @@ MainForm::MainForm(QWidget *parent)
 
     ui->setupUi(this);
     this->showMaximized();
-    WebSocketClient* client = new WebSocketClient(QUrl("ws://ec2-54-213-147-59.us-west-2.compute.amazonaws.com:12345"));
-    //WebSocketClient* client = new WebSocketClient(QUrl("ws://localhost:12345"));
+    client = new WebSocketClient(QUrl("ws://ec2-54-213-147-59.us-west-2.compute.amazonaws.com:12345"));
+    //client = new WebSocketClient(QUrl("ws://localhost:12345"));
     connect(client, &WebSocketClient::textMessageRecieved, this, &MainForm::onTextMessageRecieved);
+    connect(ui->pushButtonUpdate, &QPushButton::clicked, this, &MainForm::onUpdateRequested);
     tableviewer = new QTableView(this);
     tableviewer->setStyleSheet(
         "QTableView {"
@@ -34,6 +35,8 @@ MainForm::MainForm(QWidget *parent)
     ui->horizontalLayout->addWidget(tableviewer);
     chart = new AquaPlotter(this);
     ui->horizontalLayout_2->addWidget(chart);
+    ui->doubleSpinBoxDryPolymerUnitPrice->setValue(2.33);
+    ui->doubleSpinBoxEmulsionPolymerUnitPrice->setValue(3.96);
 
 
 
@@ -93,6 +96,15 @@ void MainForm::onTextMessageRecieved(const QString &msg)
         chart->update();
 
     }
+}
+
+void MainForm::onUpdateRequested()
+{
+    QString message;
+    message+="BudgetBasicInputs:value:Polymer_Unit_Price_Emulsion="+QString::number(ui->doubleSpinBoxEmulsionPolymerUnitPrice->value())+",";
+    message+="BudgetBasicInputs:value:Polymer_Unit_Price_Dry="+QString::number(ui->doubleSpinBoxDryPolymerUnitPrice->value())+",";
+    message+="Perform Calculations";
+    client->SendTextMessage(message);
 }
 
 bool MainForm::isValidJson(const QString &jsonString)

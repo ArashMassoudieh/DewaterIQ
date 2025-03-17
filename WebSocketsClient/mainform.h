@@ -8,6 +8,7 @@
 
 class QTableView;
 class AquaPlotter;
+class WebSocketClient;
 
 namespace Ui {
 class MainForm;
@@ -28,8 +29,10 @@ private:
     AquaTable *table = nullptr;
     QTableView *tableviewer = nullptr;
     AquaPlotter *chart = nullptr;
+    WebSocketClient* client = nullptr;
 public slots:
     void onTextMessageRecieved(const QString &msg);
+    void onUpdateRequested();
 };
 
 #endif // MAINFORM_H

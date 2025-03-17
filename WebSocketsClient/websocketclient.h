@@ -9,7 +9,7 @@ class WebSocketClient : public QObject
     Q_OBJECT
 public:
     explicit WebSocketClient(const QUrl &url, QObject *parent = nullptr);
-
+    void SendTextMessage(const QString &message);
 private slots:
     void onConnected();
     void onTextMessageReceived(QString message);

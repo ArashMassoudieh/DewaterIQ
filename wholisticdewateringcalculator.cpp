@@ -1,13 +1,11 @@
 #include "wholisticdewateringcalculator.h"
-#include "System.h"
 #include <iostream>
 
 WholisticDewateringCalculator::WholisticDewateringCalculator() {}
 
-
-AquaTable WholisticDewateringCalculator::PerformCalculation()
+bool WholisticDewateringCalculator::LoadData()
 {
-    System system;
+    system.clear();
     DataStructure BudgetBasicInputs;
     DataStructure TransportationCosts;
     DataStructure DistributionCosts;
@@ -16,19 +14,26 @@ AquaTable WholisticDewateringCalculator::PerformCalculation()
     DataStructure DiscreteAnnualCostswithDecreaseTS;
     DataStructure CakeTSvsPolyDoseTrend;
     if (!BudgetBasicInputs.readFromJsonFile("../../json_input_files/BudgetBasicInputs.json"))
-        BudgetBasicInputs.readFromJsonFile("json_input_files/BudgetBasicInputs.json");
+        if (!BudgetBasicInputs.readFromJsonFile("json_input_files/BudgetBasicInputs.json"))
+            return false;
     if (!TransportationCosts.readFromJsonFile("../../json_input_files/TransportationCosts.json"))
-        TransportationCosts.readFromJsonFile("json_input_files/TransportationCosts.json");
+        if (!TransportationCosts.readFromJsonFile("json_input_files/TransportationCosts.json"))
+            return false;
     if (!DistributionCosts.readFromJsonFile("../../json_input_files/DistributionCosts.json"))
-        DistributionCosts.readFromJsonFile("json_input_files/DistributionCosts.json");
+        if (!DistributionCosts.readFromJsonFile("json_input_files/DistributionCosts.json"))
+            return false;
     if (!StepFunctionDistributionExpenses.readFromJsonFile("../../json_input_files/StepFunctionDistributionCosts.json"))
-        StepFunctionDistributionExpenses.readFromJsonFile("json_input_files/StepFunctionDistributionCosts.json");
+        if (!StepFunctionDistributionExpenses.readFromJsonFile("json_input_files/StepFunctionDistributionCosts.json"))
+            return false;
     if (!StepFunctionTransportationExpenses.readFromJsonFile("../../json_input_files/StepFunctionTransportationCosts.json"))
-        StepFunctionTransportationExpenses.readFromJsonFile("json_input_files/StepFunctionTransportationCosts.json");
+        if (!StepFunctionTransportationExpenses.readFromJsonFile("json_input_files/StepFunctionTransportationCosts.json"))
+            return false;
     if (!DiscreteAnnualCostswithDecreaseTS.readFromJsonFile("../../json_input_files/DiscreteAnnualCostswithDecreaseTS.json"))
-        DiscreteAnnualCostswithDecreaseTS.readFromJsonFile("json_input_files/DiscreteAnnualCostswithDecreaseTS.json");
+        if (!DiscreteAnnualCostswithDecreaseTS.readFromJsonFile("json_input_files/DiscreteAnnualCostswithDecreaseTS.json"))
+            return false;
     if (!CakeTSvsPolyDoseTrend.readFromJsonFile("../../json_input_files/Cake_TS_vs_Poly_Dose_Trend.json"))
-        CakeTSvsPolyDoseTrend.readFromJsonFile("json_input_files/Cake_TS_vs_Poly_Dose_Trend.json");
+        if (!CakeTSvsPolyDoseTrend.readFromJsonFile("json_input_files/Cake_TS_vs_Poly_Dose_Trend.json"))
+            return false;
 
     system["BudgetBasicInputs"] = BudgetBasicInputs;
     system["TransporationCosts"] = TransportationCosts;
@@ -37,7 +42,11 @@ AquaTable WholisticDewateringCalculator::PerformCalculation()
     system["StepFunctionDistributionExpenses"] = StepFunctionDistributionExpenses;
     system["DiscreteAnnualCostswithDecreaseTS"] = DiscreteAnnualCostswithDecreaseTS;
     system["CakeTSvsPolyDoseTrend"] = CakeTSvsPolyDoseTrend;
+    return true;
+}
 
+AquaTable WholisticDewateringCalculator::PerformCalculation()
+{
     double ExpensePerTon = system.Calculate("(DistributionCosts+TransporationCosts) / (BudgetBasicInputs:value:DryTons/BudgetBasicInputs:value:Dewatered_Cake_TS_percent*100)");
     system.InsertScalar("ExpensePerTon",ExpensePerTon);
 
@@ -93,4 +102,9 @@ AquaTable WholisticDewateringCalculator::PerformCalculation()
 
     std::cout<<"Finished"<<std::endl;
     return TotalRRExpenses;
+}
+
+bool WholisticDewateringCalculator::SetValue(const QString &expression, const double& value)
+{
+    return system.SetValue(expression,value);
 }

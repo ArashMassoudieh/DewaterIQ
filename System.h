@@ -72,6 +72,21 @@ public:
         return this->value(key1).value(key2).value(key3);
     }
 
+    bool SetValue(const QString& expression, const double &Value) {
+        QStringList keys = expression.split(':'); // Split into ["x", "y", "z"]
+        if (keys.size()!=3)
+            return false;
+
+        if (!contains(expression))
+            return false;
+        QString key1 = keys[0];
+        QString key2 = keys[1];
+        QString key3 = keys[2];
+
+        this->operator[](key1).operator[](key2).operator[](key3)=Value;
+        return true;
+    }
+
     QJsonObject toJsonObject() const;
 
     bool FromJsonObject(const QJsonObject& jsonobject);

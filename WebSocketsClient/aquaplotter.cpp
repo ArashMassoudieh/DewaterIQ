@@ -12,8 +12,12 @@ AquaPlotter::AquaPlotter(QWidget *parent)
 
 void AquaPlotter::setData(const QMap<QString,QPair<AquaArray,AquaArray>> &dataSeries) {
     data = dataSeries;  // Store data
-
     chart->removeAllSeries();  // Clear previous series
+    QList<QAbstractAxis *> axes = chart->axes();
+    for (QAbstractAxis *axis : axes) {
+        chart->removeAxis(axis);
+        delete axis;  // Prevent memory leaks
+    }
     updatePlot();  // Refresh the plot
 }
 

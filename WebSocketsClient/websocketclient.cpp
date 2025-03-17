@@ -16,9 +16,20 @@ WebSocketClient::WebSocketClient(const QUrl &url, QObject *parent)
 void WebSocketClient::onConnected()
 {
     qDebug() << "Connected to WebSocket server!";
-    m_webSocket.sendTextMessage("Perform Calculations");
+    m_webSocket.sendTextMessage("Connection Established");
     isConnected = true;
 }
+
+void WebSocketClient::SendTextMessage(const QString &message)
+{
+    if (isConnected)
+    {   qDebug() << "Message sent" << message;
+        m_webSocket.sendTextMessage(message);
+    }
+    else
+        qDebug() << "Not connected";
+}
+
 
 void WebSocketClient::onTextMessageReceived(QString message)
 {

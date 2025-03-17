@@ -38,18 +38,31 @@ void WebSocketServer::onTextMessageReceived(QString message)
     QWebSocket *senderSocket = qobject_cast<QWebSocket *>(sender());
     if (senderSocket) {
         qDebug() << "Received message from client:" << message;
-        if (message == "Perform Calculations")
+        QStringList instructions = message.split(",");
+        WholisticDewateringCalculator calculator;
+        calculator.LoadData();
+        for (int i=0; i<instructions.count(); i++)
         {
-            WholisticDewateringCalculator calculator;
-            QJsonDocument json = calculator.PerformCalculation().toJson();
-            QString jsonString = QString::fromUtf8(json.toJson(QJsonDocument::Compact));
-            sendMessageToClient(senderSocket, jsonString);
+            if (instructions[i].contains("="))
+            {
+                calculator.SetValue(instructions[i].split("=")[0],instructions[i].split("=")[1].toDouble());
+                qDebug()<<"Value of "<<instructions[i].split("=")[0] << " was set to " << instructions[i].split("=")[1];
+            }
+            if (instructions[i] == "Perform Calculations")
+            {
+
+                QJsonDocument json = calculator.PerformCalculation().toJson();
+                QString jsonString = QString::fromUtf8(json.toJson(QJsonDocument::Compact));
+                sendMessageToClient(senderSocket, jsonString);
+            }
+            else
+            {
+                QString response = "Server Response: Received your message - " + message;
+                sendMessageToClient(senderSocket, response);
+            }
+
         }
-        else
-        {
-            QString response = "Server Response: Received your message - " + message;
-            sendMessageToClient(senderSocket, response);
-        }
+
     }
 }
 

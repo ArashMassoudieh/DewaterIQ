@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket JSON Client</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        #status { font-weight: bold; margin-bottom: 10px; }
+        textarea { width: 100%; height: 200px; margin-top: 10px; }
+        button { margin-top: 10px; padding: 10px; cursor: pointer; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+    <h1>WebSocket Client</h1>
+    <p id="status">Status: <span style="color: red;">Disconnected</span></p>
+
+    <label for="message">Send Message:</label>
+    <input type="text" id="message" placeholder="Enter command (e.g., Perform Calculations)">
+    <button onclick="sendMessage()">Send</button>
+
+    <h2>Server Response:</h2>
+    <pre id="response">No response yet...</pre>
+
+    <script>
+        let socket;
+
+        function connectWebSocket() {
+            // Change to wss:// if using HTTPS
+            socket = new WebSocket("ws://ec2-54-213-147-59.us-west-2.compute.amazonaws.com:12345");
+
+            socket.onopen = function() {
+                document.getElementById("status").innerHTML = "Status: <span style='color: green;'>Connected</span>";
+                console.log("Connected to WebSocket server.");
+            };
+
+            socket.onmessage = function(event) {
+                console.log("Received:", event.data);
+                try {
+                    let jsonResponse = JSON.parse(event.data);
+                    document.getElementById("response").textContent = JSON.stringify(jsonResponse, null, 2);
+                } catch (e) {
+                    document.getElementById("response").textContent = event.data;  // If not JSON, show raw message
+                }
+            };
+
+            socket.onerror = function(error) {
+                console.error("WebSocket error:", error);
+                document.getElementById("status").innerHTML = "Status: <span style='color: red;'>Error</span>";
+            };
+
+            socket.onclose = function() {
+                document.getElementById("status").innerHTML = "Status: <span style='color: red;'>Disconnected</span>";
+                console.log("WebSocket closed.");
+            };
+        }
+
+        function sendMessage() {
+            let message = document.getElementById("message").value;
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                console.log("Sending:", message);
+                socket.send(message);
+            } else {
+                alert("WebSocket is not connected.");
+            }
+        }
+
+        // Auto-connect WebSocket when page loads
+        window.onload = connectWebSocket;
+    </script>
+
+</body>
+</html>
+

@@ -1,7 +1,50 @@
 #include "wholisticdewateringcalculator.h"
 #include <iostream>
+#include <QFile>
+#include <QJsonArray>
 
 WholisticDewateringCalculator::WholisticDewateringCalculator() {}
+
+
+bool WholisticDewateringCalculator::BuildSystem(const QString &filename)
+{
+    system.clear();
+
+    QFile file(filename);
+
+    // Open the file
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Failed to open file:" << filename;
+        return false;
+    }
+
+    // Read the file content
+    QByteArray fileData = file.readAll();
+    file.close();
+
+    // Parse the JSON content
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
+    if (jsonDoc.isNull() || !jsonDoc.isObject()) {
+        //qDebug() << "Invalid JSON format in file:" << filename;
+        return false;
+    }
+
+    QJsonObject rootObj = jsonDoc.object();
+    QJsonArray Tables = rootObj["Tables"].toArray();
+    qDebug()<<Tables;
+    for (int i=0; i<Tables.count(); i++)
+    {
+        DataStructure table;
+        if (!table.readFromJsonFile(Tables[i].toObject()["FileName"].toString()))
+        {   if (!table.readFromJsonFile(Tables[i].toObject()["FileName"].toString().split("/").last()))
+                qDebug()<<"Table '" + Tables[i].toObject()["FileName"].toString() + "' was not found";
+        }
+        if (table.count()!=0)
+            system[Tables[i].toObject()["Name"].toString()] = table;
+    }
+    //qDebug()<<system;
+    return true;
+}
 
 bool WholisticDewateringCalculator::LoadData()
 {

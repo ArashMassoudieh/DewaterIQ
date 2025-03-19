@@ -1,0 +1,32 @@
+{
+	"Tables": [
+		{
+			"Name": "BudgetBasicInputs",
+			"FileName": "../../json_input_files/BudgetBasicInputs.json"
+		},
+		{
+			"Name": "TransportationCosts",
+			"FileName": "../../json_input_files/TransportationCosts.json"
+		},
+		{
+			"Name": "DistributionCosts",
+			"FileName": "../../json_input_files/DistributionCosts.json"
+		},
+		{
+			"Name": "StepFunctionDistributionCosts",
+			"FileName": "../../json_input_files/StepFunctionDistributionCosts.json"
+		},
+		{
+			"Name": "StepFunctionTransportationCosts",
+			"FileName": "../../json_input_files/StepFunctionTransportationCosts.json"
+		},
+		{
+			"Name": "DiscreteAnnualCostswithDecreaseTS",
+			"FileName": "../../json_input_files/DiscreteAnnualCostswithDecreaseTS.json"
+		},
+		{
+			"Name": "Cake_TS_vs_Poly_Dose_Trend",
+			"FileName": "../../json_input_files/Cake_TS_vs_Poly_Dose_Trend.json"
+		}
+	]
+}

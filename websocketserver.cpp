@@ -1,6 +1,5 @@
 #include "websocketserver.h"
 #include <QDebug>
-#include "wholisticdewateringcalculator.h"
 
 WebSocketServer::WebSocketServer(quint16 port, QObject *parent)
     : QObject(parent),
@@ -12,6 +11,11 @@ WebSocketServer::WebSocketServer(quint16 port, QObject *parent)
         connect(m_server, &QWebSocketServer::newConnection,
                 this, &WebSocketServer::onNewConnection);
     }
+    if (!calculator.BuildSystem("../../json_input_files/Instructions.json"))
+        calculator.BuildSystem("json_input_files/Instructions.json");
+
+
+
 }
 
 WebSocketServer::~WebSocketServer()
@@ -39,8 +43,9 @@ void WebSocketServer::onTextMessageReceived(QString message)
     if (senderSocket) {
         qDebug() << "Received message from client:" << message;
         QStringList instructions = message.split(",");
-        WholisticDewateringCalculator calculator;
-        calculator.LoadData();
+
+        if (!calculator.BuildSystem("../../json_input_files/Instructions.json"))
+            calculator.BuildSystem("json_input_files/Instructions.json");
         for (int i=0; i<instructions.count(); i++)
         {
             if (instructions[i].contains("="))

@@ -10,8 +10,10 @@ public:
     bool LoadData();
     AquaTable PerformCalculation();
     bool SetValue(const QString &exression, const double& value);
+    bool BuildSystem(const QString &JsonFileName);
 private:
     System system;
+
 
 };
 

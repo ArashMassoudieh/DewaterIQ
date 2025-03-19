@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QWebSocketServer>
 #include <QWebSocket>
+#include "wholisticdewateringcalculator.h"
+
 
 class WebSocketServer : public QObject
 {
@@ -21,6 +23,7 @@ private slots:
 private:
     QWebSocketServer *m_server;
     QList<QWebSocket *> m_clients;
+    WholisticDewateringCalculator calculator;
 };
 
 #endif // WEBSOCKETSERVER_H

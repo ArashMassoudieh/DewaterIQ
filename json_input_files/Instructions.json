@@ -28,5 +28,22 @@
 			"Name": "Cake_TS_vs_Poly_Dose_Trend",
 			"FileName": "../../json_input_files/Cake_TS_vs_Poly_Dose_Trend.json"
 		}
+	],
+	"Expressions": [
+		{
+			"Variable": "ExpensePerTon",
+			"Type": "Scalar",
+			"Expression": "(DistributionCosts+TransporationCosts) / (BudgetBasicInputs:value:DryTons/BudgetBasicInputs:value:Dewatered_Cake_TS_percent*100)"
+		},
+		{
+			"Variable": "Dewatered_Cake_TS_Percent",
+			"Type": "Sequence",
+			"Expression": "18:24:12"
+		},
+		{
+			"Variable": "Wet_Tons",
+			"Type": "Array",
+			"Expression": "BudgetBasicInputs:value:DryTons/Dewatered_Cake_TS_Percent*100"
+		}
 	]
 }

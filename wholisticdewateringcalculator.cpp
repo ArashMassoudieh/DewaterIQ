@@ -25,13 +25,25 @@ bool WholisticDewateringCalculator::BuildSystem(const QString &filename)
     // Parse the JSON content
     QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
     if (jsonDoc.isNull() || !jsonDoc.isObject()) {
-        //qDebug() << "Invalid JSON format in file:" << filename;
+        qDebug() << "Invalid JSON format in file:" << filename;
         return false;
     }
 
     QJsonObject rootObj = jsonDoc.object();
+
+    if (!rootObj.contains("Tables"))
+    {
+        qDebug() << "No 'Tables' object was found";
+        return false;
+    }
+
+    if (!rootObj.contains("Expressions"))
+    {
+        qDebug() << "No 'Expressions' object was found";
+        return false;
+    }
     QJsonArray Tables = rootObj["Tables"].toArray();
-    qDebug()<<Tables;
+    //qDebug()<<Tables;
     for (int i=0; i<Tables.count(); i++)
     {
         DataStructure table;
@@ -42,7 +54,19 @@ bool WholisticDewateringCalculator::BuildSystem(const QString &filename)
         if (table.count()!=0)
             system[Tables[i].toObject()["Name"].toString()] = table;
     }
-    //qDebug()<<system;
+
+    QJsonArray ExpressionJson = rootObj["Expressions"].toArray();
+    //qDebug()<<Tables;
+    for (int i=0; i<ExpressionJson.count(); i++)
+    {
+        expression anexpression;
+        anexpression.Expression = ExpressionJson[i].toObject()["Expression"].toString();
+        anexpression.Type = ExpressionJson[i].toObject()["Type"].toString();
+        anexpression.Name = ExpressionJson[i].toObject()["Variable"].toString();
+        Expressions.append(anexpression);
+    }
+
+    PerformCalculation();
     return true;
 }
 
@@ -90,61 +114,30 @@ bool WholisticDewateringCalculator::LoadData()
 
 AquaTable WholisticDewateringCalculator::PerformCalculation()
 {
-    double ExpensePerTon = system.Calculate("(DistributionCosts+TransporationCosts) / (BudgetBasicInputs:value:DryTons/BudgetBasicInputs:value:Dewatered_Cake_TS_percent*100)");
-    system.InsertScalar("ExpensePerTon",ExpensePerTon);
 
-    AquaTable TotalRRExpenses;
-    TotalRRExpenses.AppendSequence("Dewatered_Cake_TS_Percent",18,24,12,sequencemode::linear);
-
-    double drytons = system.Eval("BudgetBasicInputs:value:DryTons");
-    AquaArray Wet_Tons = system.Calculate(&TotalRRExpenses,"BudgetBasicInputs:value:DryTons/Dewatered_Cake_TS_Percent*100");
-    ////qDebug()<<Wet_Tons;
-
-    TotalRRExpenses.AppendColumn("WetTons",Wet_Tons);
-    AquaArray Total_RRR_OM_Variable_Expenses = system.Calculate(&TotalRRExpenses,"WetTons*ExpensePerTon");
-
-    AquaArray OperatorTerm;
-    AquaArray MechanicTerm;
-
-    OperatorTerm.append(system.Calculate(&TotalRRExpenses,"hsd(BudgetBasicInputs:value:Dewatered_Cake_TS_percent-Dewatered_Cake_TS_Percent)*floor((BudgetBasicInputs:value:Dewatered_Cake_TS_percent-Dewatered_Cake_TS_Percent)/(100*DiscreteAnnualCostswithDecreaseTS:Percent_Decrease:Each_New_Operator))*DiscreteAnnualCostswithDecreaseTS:Amount:Each_New_Operator"));
-    MechanicTerm.append(system.Calculate(&TotalRRExpenses,"hsd(BudgetBasicInputs:value:Dewatered_Cake_TS_percent-Dewatered_Cake_TS_Percent)*floor((BudgetBasicInputs:value:Dewatered_Cake_TS_percent-Dewatered_Cake_TS_Percent)/(100*DiscreteAnnualCostswithDecreaseTS:Percent_Decrease:Each_New_Mechanic))*DiscreteAnnualCostswithDecreaseTS:Amount:Each_New_Mechanic"));
-
-    TotalRRExpenses.AppendColumn("OperatorExpense",OperatorTerm);
-    TotalRRExpenses.AppendColumn("MechanicExpense",MechanicTerm);
-
-    AquaArray Base_Labor_Expenses = system.Calculate(&TotalRRExpenses,"(StepFunctionTransportationExpenses+StepFunctionDistributionExpenses)");
-    TotalRRExpenses.AppendColumn("BaseExpense",Base_Labor_Expenses);
-    AquaArray Total_Labor_Expenses = system.Calculate(&TotalRRExpenses,"OperatorExpense + MechanicExpense + BaseExpense");
-    TotalRRExpenses.AppendColumn("TotalLaborExpense",Total_Labor_Expenses);
-
-    AquaArray AdditionalExpense = system.Calculate(&TotalRRExpenses, "hsd(BudgetBasicInputs:value:Dewatered_Cake_TS_percent-Dewatered_Cake_TS_Percent)*floor((BudgetBasicInputs:value:Dewatered_Cake_TS_percent-Dewatered_Cake_TS_Percent)/(100*DiscreteAnnualCostswithDecreaseTS:Percent_Decrease:Tractor_Trailer_Combination))*DiscreteAnnualCostswithDecreaseTS:Amount:Tractor_Trailer_Combination");
-
-    TotalRRExpenses.AppendColumn("Total_RRnR_OnM_Variable_Expenses",Total_RRR_OM_Variable_Expenses);
-    TotalRRExpenses.AppendColumn("Additional_Expenses",AdditionalExpense);
-    AquaArray Total_RRR_Variable_Expenses = system.Calculate(&TotalRRExpenses,"TotalLaborExpense+Total_RRnR_OnM_Variable_Expenses+Additional_Expenses");
-    TotalRRExpenses.AppendColumn("Total_RRR_Variable_Expenses",Total_RRR_Variable_Expenses);
-
-    double intercept = system.Eval("CakeTSvsPolyDoseTrend:Intercept:Dry");
-    AquaArray Dry_Polymer_Use = system.Calculate(&TotalRRExpenses,"exp((Dewatered_Cake_TS_Percent-CakeTSvsPolyDoseTrend:Intercept:Dry)/CakeTSvsPolyDoseTrend:Slope:Dry)*(Dewatered_Cake_TS_Percent/100*WetTons)");
-    TotalRRExpenses.AppendColumn("Dry_Polymer_Use",Dry_Polymer_Use);
-
-    AquaArray Emulsion_Polymer_Use = system.Calculate(&TotalRRExpenses,"exp((Dewatered_Cake_TS_Percent-CakeTSvsPolyDoseTrend:Intercept:Emulsion)/CakeTSvsPolyDoseTrend:Slope:Emulsion)*(Dewatered_Cake_TS_Percent/100*WetTons)");
-    TotalRRExpenses.AppendColumn("Emulsion_Polymer_Use",Emulsion_Polymer_Use);
-
-    AquaArray Dry_Polymer_Cost = system.Calculate(&TotalRRExpenses,"Dry_Polymer_Use*BudgetBasicInputs:value:Polymer_Unit_Price_Dry+0.092296*Dry_Polymer_Use");
-    TotalRRExpenses.AppendColumn("Dry_Polymer_Cost",Dry_Polymer_Cost);
-
-    AquaArray Emulsion_Polymer_Cost = system.Calculate(&TotalRRExpenses,"Emulsion_Polymer_Use*BudgetBasicInputs:value:Polymer_Unit_Price_Emulsion");
-    TotalRRExpenses.AppendColumn("Emulsion_Polymer_Cost",Emulsion_Polymer_Cost);
-
-    AquaArray Total_Cost_Dry = system.Calculate(&TotalRRExpenses,"Dry_Polymer_Cost+Total_RRR_Variable_Expenses");
-    TotalRRExpenses.AppendColumn("Total_Cost_Dry",Total_Cost_Dry);
-
-    AquaArray Total_Cost_Emulsion = system.Calculate(&TotalRRExpenses,"Emulsion_Polymer_Cost+Total_RRR_Variable_Expenses");
-    TotalRRExpenses.AppendColumn("Total_Cost_Emulsion",Total_Cost_Emulsion);
+    AquaTable out;
+    for (int i=0; i<Expressions.count(); i++)
+    {
+        if (Expressions[i].Type == "Sequence")
+        {
+            QStringList parameters = Expressions[i].Expression.split(":");
+            out.AppendSequence(Expressions[i].Name,parameters[0].toDouble(),parameters[1].toDouble(),parameters[2].toInt(),sequencemode::linear);
+        }
+        if (Expressions[i].Type == "Scalar")
+        {
+            double var = system.Calculate(Expressions[i].Expression);
+            system.InsertScalar(Expressions[i].Name,var);
+        }
+        if (Expressions[i].Type == "Array")
+        {
+            AquaArray var = system.Calculate(&out,Expressions[i].Expression);
+            out.AppendColumn(Expressions[i].Name, var);
+        }
+    }
 
     std::cout<<"Finished"<<std::endl;
-    return TotalRRExpenses;
+    //out.WritetoCSV("Calculated.csv");
+    return out;
 }
 
 bool WholisticDewateringCalculator::SetValue(const QString &expression, const double& value)

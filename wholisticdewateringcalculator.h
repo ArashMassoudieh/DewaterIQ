@@ -3,6 +3,12 @@
 #include "aquatable.h"
 #include "System.h"
 
+struct expression {
+    QString Name;
+    QString Type;
+    QString Expression;
+};
+
 class WholisticDewateringCalculator
 {
 public:
@@ -13,6 +19,8 @@ public:
     bool BuildSystem(const QString &JsonFileName);
 private:
     System system;
+    QVector<expression> Expressions;
+
 
 
 };

@@ -9,7 +9,7 @@ WholisticDewateringCalculator::WholisticDewateringCalculator() {}
 bool WholisticDewateringCalculator::BuildSystem(const QString &filename)
 {
     system.clear();
-
+    Expressions.clear();
     QFile file(filename);
 
     // Open the file

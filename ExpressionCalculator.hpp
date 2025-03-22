@@ -200,7 +200,7 @@ inline double ExpressionCalculator::evaluatePostfix(const AquaArray* array, cons
         }
         else if (AquaTableVariableNames.contains(token))
         {
-            qDebug() << token.right(token.size()-1);
+            //qDebug() << token.right(token.size()-1);
             int column_no = AquaTableVariableNames.indexOf(token);
             stack.push(array->value(column_no));
         }

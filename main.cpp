@@ -8,7 +8,7 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-
+    std::cout<<"Version built, 3/22/2025, 10:49 am"<<std::endl;
 #ifdef USE_WEBSOCKETS
     WebSocketServer server(12345); // Start the WebSocket server on port 12345
 #else

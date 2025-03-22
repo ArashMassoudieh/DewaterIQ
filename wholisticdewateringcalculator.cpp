@@ -48,7 +48,7 @@ bool WholisticDewateringCalculator::BuildSystem(const QString &filename)
     {
         DataStructure table;
         if (!table.readFromJsonFile(Tables[i].toObject()["FileName"].toString()))
-        {   if (!table.readFromJsonFile(Tables[i].toObject()["FileName"].toString().split("/").last()))
+        {   if (!table.readFromJsonFile(Tables[i].toObject()["FileName"].toString().remove("../../")))
                 qDebug()<<"Table '" + Tables[i].toObject()["FileName"].toString() + "' was not found";
         }
         if (table.count()!=0)
@@ -65,52 +65,12 @@ bool WholisticDewateringCalculator::BuildSystem(const QString &filename)
         anexpression.Name = ExpressionJson[i].toObject()["Variable"].toString();
         Expressions.append(anexpression);
     }
-
+    qDebug()<<"Instruction in '" + filename + "' was loaded successfully";
     PerformCalculation();
     return true;
 }
 
-bool WholisticDewateringCalculator::LoadData()
-{
-    system.clear();
-    DataStructure BudgetBasicInputs;
-    DataStructure TransportationCosts;
-    DataStructure DistributionCosts;
-    DataStructure StepFunctionDistributionExpenses;
-    DataStructure StepFunctionTransportationExpenses;
-    DataStructure DiscreteAnnualCostswithDecreaseTS;
-    DataStructure CakeTSvsPolyDoseTrend;
-    if (!BudgetBasicInputs.readFromJsonFile("../../json_input_files/BudgetBasicInputs.json"))
-        if (!BudgetBasicInputs.readFromJsonFile("json_input_files/BudgetBasicInputs.json"))
-            return false;
-    if (!TransportationCosts.readFromJsonFile("../../json_input_files/TransportationCosts.json"))
-        if (!TransportationCosts.readFromJsonFile("json_input_files/TransportationCosts.json"))
-            return false;
-    if (!DistributionCosts.readFromJsonFile("../../json_input_files/DistributionCosts.json"))
-        if (!DistributionCosts.readFromJsonFile("json_input_files/DistributionCosts.json"))
-            return false;
-    if (!StepFunctionDistributionExpenses.readFromJsonFile("../../json_input_files/StepFunctionDistributionCosts.json"))
-        if (!StepFunctionDistributionExpenses.readFromJsonFile("json_input_files/StepFunctionDistributionCosts.json"))
-            return false;
-    if (!StepFunctionTransportationExpenses.readFromJsonFile("../../json_input_files/StepFunctionTransportationCosts.json"))
-        if (!StepFunctionTransportationExpenses.readFromJsonFile("json_input_files/StepFunctionTransportationCosts.json"))
-            return false;
-    if (!DiscreteAnnualCostswithDecreaseTS.readFromJsonFile("../../json_input_files/DiscreteAnnualCostswithDecreaseTS.json"))
-        if (!DiscreteAnnualCostswithDecreaseTS.readFromJsonFile("json_input_files/DiscreteAnnualCostswithDecreaseTS.json"))
-            return false;
-    if (!CakeTSvsPolyDoseTrend.readFromJsonFile("../../json_input_files/Cake_TS_vs_Poly_Dose_Trend.json"))
-        if (!CakeTSvsPolyDoseTrend.readFromJsonFile("json_input_files/Cake_TS_vs_Poly_Dose_Trend.json"))
-            return false;
 
-    system["BudgetBasicInputs"] = BudgetBasicInputs;
-    system["TransporationCosts"] = TransportationCosts;
-    system["DistributionCosts"] = DistributionCosts;
-    system["StepFunctionTransportationExpenses"] = StepFunctionTransportationExpenses;
-    system["StepFunctionDistributionExpenses"] = StepFunctionDistributionExpenses;
-    system["DiscreteAnnualCostswithDecreaseTS"] = DiscreteAnnualCostswithDecreaseTS;
-    system["CakeTSvsPolyDoseTrend"] = CakeTSvsPolyDoseTrend;
-    return true;
-}
 
 AquaTable WholisticDewateringCalculator::PerformCalculation()
 {

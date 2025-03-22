@@ -49,7 +49,7 @@ bool DataStructure::readFromJsonFile(const QString& filename) {
 
     // Open the file
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        //qDebug() << "Failed to open file:" << filename;
+        qDebug() << "Failed to open file:" << filename;
         return false;
     }
 
@@ -63,6 +63,7 @@ bool DataStructure::readFromJsonFile(const QString& filename) {
         //qDebug() << "Invalid JSON format in file:" << filename;
         return false;
     }
+    qDebug() << "Data in Table '" + filename + "' was loaded successfully";
 
     QJsonObject rootObj = jsonDoc.object();
     return FromJson(rootObj);

@@ -11,11 +11,9 @@ WebSocketServer::WebSocketServer(quint16 port, QObject *parent)
         connect(m_server, &QWebSocketServer::newConnection,
                 this, &WebSocketServer::onNewConnection);
     }
+
     if (!calculator.BuildSystem("../../json_input_files/Instructions.json"))
         calculator.BuildSystem("json_input_files/Instructions.json");
-
-
-
 }
 
 WebSocketServer::~WebSocketServer()
@@ -35,6 +33,8 @@ void WebSocketServer::onNewConnection()
 
     m_clients.append(socket);
     qDebug() << "New client connected!";
+
+
 }
 
 void WebSocketServer::onTextMessageReceived(QString message)

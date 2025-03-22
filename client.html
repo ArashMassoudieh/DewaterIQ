@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebSocket JSON Client</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { font-family: Arial, sans-serif; padding: 20px; }
         #status { font-weight: bold; margin-bottom: 10px; }
-        textarea { width: 100%; height: 200px; margin-top: 10px; }
-        button { margin-top: 10px; padding: 10px; cursor: pointer; }
-        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+        input, button { margin-top: 10px; padding: 10px; cursor: pointer; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; white-space: pre-wrap; word-wrap: break-word; }
+        canvas { max-width: 100%; margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -17,15 +18,23 @@
     <h1>WebSocket Client</h1>
     <p id="status">Status: <span style="color: red;">Disconnected</span></p>
 
-    <label for="message">Send Message:</label>
-    <input type="text" id="message" placeholder="Enter command (e.g., Perform Calculations)">
-    <button onclick="sendMessage()">Send</button>
+    <label for="spinbox1">Polymer Unit Price (Emulsion):</label>
+    <input type="number" id="spinbox1" min="0" max="5" step="0.1" value="0">
+    
+    <label for="spinbox2">Polymer Unit Price (Dry):</label>
+    <input type="number" id="spinbox2" min="0" max="5" step="0.1" value="0">
+
+    <button onclick="sendMessage()">Send Data</button>
 
     <h2>Server Response:</h2>
     <pre id="response">No response yet...</pre>
 
+    <h2>Cost Comparison Chart</h2>
+    <canvas id="costChart"></canvas>
+
     <script>
         let socket;
+        let costChart;
 
         function connectWebSocket() {
             // Change to wss:// if using HTTPS
@@ -38,12 +47,7 @@
 
             socket.onmessage = function(event) {
                 console.log("Received:", event.data);
-                try {
-                    let jsonResponse = JSON.parse(event.data);
-                    document.getElementById("response").textContent = JSON.stringify(jsonResponse, null, 2);
-                } catch (e) {
-                    document.getElementById("response").textContent = event.data;  // If not JSON, show raw message
-                }
+                displayResponse(event.data);
             };
 
             socket.onerror = function(error) {
@@ -58,12 +62,25 @@
         }
 
         function sendMessage() {
-            let message = document.getElementById("message").value;
+            let value1 = document.getElementById("spinbox1").value;
+            let value2 = document.getElementById("spinbox2").value;
+
+            let message = `BudgetBasicInputs:value:Polymer_Unit_Price_Emulsion=${value1},BudgetBasicInputs:value:Polymer_Unit_Price_Dry=${value2},Perform Calculations`;
+
             if (socket && socket.readyState === WebSocket.OPEN) {
                 console.log("Sending:", message);
                 socket.send(message);
             } else {
                 alert("WebSocket is not connected.");
+            }
+        }
+
+        function displayResponse(data) {
+            try {
+                let jsonResponse = JSON.parse(data);
+                document.getElementById("response").textContent = JSON.stringify(jsonResponse, null, 2);
+            } catch (e) {
+                document.getElementById("response").textContent = data;  // If not JSON, show raw message
             }
         }
 

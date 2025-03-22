@@ -1,0 +1,114 @@
+{
+	"Tables": [
+		{
+			"Name": "BudgetBasicInputs",
+			"FileName": "../../json_input_files/BudgetBasicInputs.json"
+		},
+		{
+			"Name": "TransportationCosts",
+			"FileName": "../../json_input_files/TransportationCosts.json"
+		},
+		{
+			"Name": "DistributionCosts",
+			"FileName": "../../json_input_files/DistributionCosts.json"
+		},
+		{
+			"Name": "StepFunctionDistributionCosts",
+			"FileName": "../../json_input_files/StepFunctionDistributionCosts.json"
+		},
+		{
+			"Name": "StepFunctionTransportationCosts",
+			"FileName": "../../json_input_files/StepFunctionTransportationCosts.json"
+		},
+		{
+			"Name": "DiscreteAnnualCostswithDecreaseTS",
+			"FileName": "../../json_input_files/DiscreteAnnualCostswithDecreaseTS.json"
+		},
+		{
+			"Name": "CakeTSvsPolyDoseTrend",
+			"FileName": "../../json_input_files/Cake_TS_vs_Poly_Dose_Trend.json"
+		}
+	],
+	"Expressions": [
+		{
+			"Variable": "ExpensePerTon",
+			"Type": "Scalar",
+			"Expression": "(DistributionCosts+TransportationCosts) / (BudgetBasicInputs:value:DryTons/BudgetBasicInputs:value:Dewatered_Cake_TS_percent*100)"
+		},
+		{
+			"Variable": "Dewatered_Cake_TS_Percent",
+			"Type": "Sequence",
+			"Expression": "18:24:12"
+		},
+		{
+			"Variable": "WetTons",
+			"Type": "Array",
+			"Expression": "BudgetBasicInputs:value:DryTons/Dewatered_Cake_TS_Percent*100"
+		},
+		{
+			"Variable": "Total_RRR_OM_Variable_Expenses",
+			"Type": "Array",
+			"Expression": "WetTons*ExpensePerTon"
+		},
+		{
+			"Variable": "OperatorTerm",
+			"Type": "Array",
+			"Expression": "hsd(BudgetBasicInputs:value:Dewatered_Cake_TS_percent-Dewatered_Cake_TS_Percent)*floor((BudgetBasicInputs:value:Dewatered_Cake_TS_percent-Dewatered_Cake_TS_Percent)/(100*DiscreteAnnualCostswithDecreaseTS:Percent_Decrease:Each_New_Operator))*DiscreteAnnualCostswithDecreaseTS:Amount:Each_New_Operator"
+		},
+		{
+			"Variable": "MechanicTerm",
+			"Type": "Array",
+			"Expression": "hsd(BudgetBasicInputs:value:Dewatered_Cake_TS_percent-Dewatered_Cake_TS_Percent)*floor((BudgetBasicInputs:value:Dewatered_Cake_TS_percent-Dewatered_Cake_TS_Percent)/(100*DiscreteAnnualCostswithDecreaseTS:Percent_Decrease:Each_New_Mechanic))*DiscreteAnnualCostswithDecreaseTS:Amount:Each_New_Mechanic"
+		},
+		{
+			"Variable": "Base_Labor_Expenses",
+			"Type": "Array",
+			"Expression": "StepFunctionDistributionCosts+StepFunctionTransportationCosts"
+		},
+		{
+			"Variable": "TotalLaborExpenses",
+			"Type": "Array",
+			"Expression": "OperatorTerm + MechanicTerm + Base_Labor_Expenses"
+		},
+		{
+			"Variable": "AdditionalExpenses",
+			"Type": "Array",
+			"Expression": "hsd(BudgetBasicInputs:value:Dewatered_Cake_TS_percent-Dewatered_Cake_TS_Percent)*floor((BudgetBasicInputs:value:Dewatered_Cake_TS_percent-Dewatered_Cake_TS_Percent)/(100*DiscreteAnnualCostswithDecreaseTS:Percent_Decrease:Tractor_Trailer_Combination))*DiscreteAnnualCostswithDecreaseTS:Amount:Tractor_Trailer_Combination"
+		},
+		{
+			"Variable": "Total_RRR_Variable_Expenses",
+			"Type": "Array",
+			"Expression": "TotalLaborExpenses+Total_RRR_OM_Variable_Expenses+AdditionalExpenses"
+		},
+		{
+			"Variable": "Dry_Polymer_Use",
+			"Type": "Array",
+			"Expression": "exp((Dewatered_Cake_TS_Percent-CakeTSvsPolyDoseTrend:Intercept:Dry)/CakeTSvsPolyDoseTrend:Slope:Dry)*(Dewatered_Cake_TS_Percent/100*WetTons)"
+		},
+		{
+			"Variable": "Emulsion_Polymer_Use",
+			"Type": "Array",
+			"Expression": "exp((Dewatered_Cake_TS_Percent-CakeTSvsPolyDoseTrend:Intercept:Emulsion)/CakeTSvsPolyDoseTrend:Slope:Emulsion)*(Dewatered_Cake_TS_Percent/100*WetTons)"
+		},
+		{
+			"Variable": "Dry_Polymer_Cost",
+			"Type": "Array",
+			"Expression": "Dry_Polymer_Use*BudgetBasicInputs:value:Polymer_Unit_Price_Dry+0.092296*Dry_Polymer_Use"
+		},
+		{
+			"Variable": "Emulsion_Polymer_Cost",
+			"Type": "Array",
+			"Expression": "Emulsion_Polymer_Use*BudgetBasicInputs:value:Polymer_Unit_Price_Emulsion"
+		},
+		{
+			"Variable": "Total_Dry_Polymer_Cost",
+			"Type": "Array",
+			"Expression": "Dry_Polymer_Cost+Total_RRR_Variable_Expenses"
+		},
+		{
+			"Variable": "Total_Emulsion_Polymer_Cost",
+			"Type": "Array",
+			"Expression": "Emulsion_Polymer_Cost+Total_RRR_Variable_Expenses"
+		}
+	]
+}

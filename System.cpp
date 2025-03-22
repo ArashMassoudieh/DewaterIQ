@@ -113,7 +113,7 @@ bool System::InsertScalar(const QString &VariableName, const double& value)
 {
     if (contains(VariableName))
     {
-        throw std::runtime_error(("Variable " + VariableName + " already exists").toStdString() );
+        //throw std::runtime_error(("Variable " + VariableName + " already exists").toStdString() );
         return false;
     }
     DataStructure data;
@@ -131,7 +131,7 @@ bool System::InsertVector(const QString &MapName, const QStringList &VariableNam
     }
     if (contains(MapName))
     {
-        throw std::runtime_error(("Data Structure " + MapName + " already exists").toStdString() );
+        //throw std::runtime_error(("Data Structure " + MapName + " already exists").toStdString() );
         return false;
     }
     DataStructure data;

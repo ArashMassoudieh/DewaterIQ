@@ -66,7 +66,7 @@ bool WholisticDewateringCalculator::BuildSystem(const QString &filename)
         Expressions.append(anexpression);
     }
     qDebug()<<"Instruction in '" + filename + "' was loaded successfully";
-    PerformCalculation();
+
     return true;
 }
 

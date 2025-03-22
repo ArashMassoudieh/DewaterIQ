@@ -64,3 +64,5 @@ Makefile
 *.csv#
 
 dewateriq-qt6.tar
+
+build-DewaterIQClientGUI-Desktop_Qt_6_3_2_GCC_64bit-Debug/

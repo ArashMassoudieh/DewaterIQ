@@ -46,6 +46,8 @@ void WebSocketServer::onTextMessageReceived(QString message)
 
         if (!calculator.BuildSystem("../../json_input_files/Instructions.json"))
             calculator.BuildSystem("json_input_files/Instructions.json");
+
+
         for (int i=0; i<instructions.count(); i++)
         {
             if (instructions[i].contains("="))

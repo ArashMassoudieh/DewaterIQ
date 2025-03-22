@@ -59,9 +59,9 @@ void MainForm::onTextMessageRecieved(const QString &msg)
         QStringList columns_to_be_shown;
         columns_to_be_shown<<"Dewatered_Cake_TS_Percent";
         columns_to_be_shown<<"WetTons";
-        columns_to_be_shown<<"Total_RRnR_OnM_Variable_Expenses";
-        columns_to_be_shown<<"Total_Cost_Emulsion";
-        columns_to_be_shown<<"Total_Cost_Dry";
+        columns_to_be_shown<<"Total_RRR_Variable_Expenses";
+        columns_to_be_shown<<"Total_Emulsion_Polymer_Cost";
+        columns_to_be_shown<<"Total_Dry_Polymer_Cost";
 
         QStringList aliases;
         aliases << "Dewatered Cake TS (%)";
@@ -79,12 +79,12 @@ void MainForm::onTextMessageRecieved(const QString &msg)
 
         QMap<QString,QPair<AquaArray,AquaArray>> dataSeries;
         AquaArray x_value = table->GetColumn("Dewatered_Cake_TS_Percent");
-        AquaArray y_value = table->GetColumn("Total_Cost_Emulsion");
+        AquaArray y_value = table->GetColumn("Total_Emulsion_Polymer_Cost");
         QPair<AquaArray,AquaArray> xy = QPair(x_value,y_value);
         dataSeries["TotalEmulsionPolymerCost"] = xy;
 
         x_value = table->GetColumn("Dewatered_Cake_TS_Percent");
-        y_value = table->GetColumn("Total_Cost_Dry");
+        y_value = table->GetColumn("Total_Dry_Polymer_Cost");
         xy = QPair(x_value,y_value);
         dataSeries["TotalDryPolymerCost"] = xy;
         plot_parameters chartparameters;

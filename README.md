@@ -58,22 +58,25 @@ Paste this into the file:
 
 ```
 [Unit]
-Description=DewaterIQ Docker Service
-After=docker.service
+Description=DewaterIQ Docker Service with WebSocket Support
+After=docker.service network.target
 Requires=docker.service
 
 [Service]
 Restart=always
 RestartSec=5
 
-ExecStart=/usr/bin/docker run --rm --name dewateriq \
+ExecStart=/usr/bin/docker run --rm \
+  --name dewateriq \
   -e QT_QPA_PLATFORM=offscreen \
+  -p 12345:12345 \
   dewateriq-qt6
 
 ExecStop=/usr/bin/docker stop dewateriq
 
 [Install]
 WantedBy=multi-user.target
+
 ```
 
 Save the file and exit (Ctrl+O, Enter, Ctrl+X).

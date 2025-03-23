@@ -49,9 +49,11 @@ bool WholisticDewateringCalculator::BuildSystem(const QString &filename)
         DataStructure table;
         if (!table.readFromJsonFile(Tables[i].toObject()["FileName"].toString()))
         {
-            QString fullpath = findFileRecursive("/",Tables[i].toObject()["FileName"].toString());
+            QString fullpath = findFileRecursive(".",Tables[i].toObject()["FileName"].toString());
             if (!fullpath.isEmpty())
-                table.readFromJsonFile(fullpath);
+            {   table.readFromJsonFile(fullpath);
+                qDebug()<< fullpath + " was successfully loaded";
+            }
             else
                 qDebug()<<"Table '" + Tables[i].toObject()["FileName"].toString() + "' was not found";
         }

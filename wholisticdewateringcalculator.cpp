@@ -48,7 +48,11 @@ bool WholisticDewateringCalculator::BuildSystem(const QString &filename)
     {
         DataStructure table;
         if (!table.readFromJsonFile(Tables[i].toObject()["FileName"].toString()))
-        {   if (!table.readFromJsonFile(Tables[i].toObject()["FileName"].toString().remove("../../")))
+        {
+            QString fullpath = findFileRecursive("/",Tables[i].toObject()["FileName"].toString());
+            if (!fullpath.isEmpty())
+                table.readFromJsonFile(fullpath);
+            else
                 qDebug()<<"Table '" + Tables[i].toObject()["FileName"].toString() + "' was not found";
         }
         if (table.count()!=0)
@@ -104,3 +108,28 @@ bool WholisticDewateringCalculator::SetValue(const QString &expression, const do
 {
     return system.SetValue(expression,value);
 }
+
+#include <QDirIterator>
+#include <QString>
+#include <QFileInfo>
+
+// Returns the full path of the file if found, or an empty QString otherwise.
+QString WholisticDewateringCalculator::findFileRecursive(const QString& rootFolder, const QString& fileName)
+{
+    QDirIterator iterator(rootFolder,
+                          QStringList() << fileName,
+                          QDir::Files,
+                          QDirIterator::Subdirectories);
+
+    while (iterator.hasNext()) {
+        iterator.next();
+        QFileInfo fileInfo = iterator.fileInfo();
+        if (fileInfo.fileName() == fileName) {
+            return fileInfo.absoluteFilePath();
+        }
+    }
+
+    // If not found, return empty QString
+    return QString();
+}
+

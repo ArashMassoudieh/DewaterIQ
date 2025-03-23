@@ -16,6 +16,7 @@ public:
     AquaTable PerformCalculation();
     bool SetValue(const QString &exression, const double& value);
     bool BuildSystem(const QString &JsonFileName);
+    QString findFileRecursive(const QString& rootFolder, const QString& fileName);
 private:
     System system;
     QVector<expression> Expressions;

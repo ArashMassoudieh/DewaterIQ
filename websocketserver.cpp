@@ -13,7 +13,16 @@ WebSocketServer::WebSocketServer(quint16 port, QObject *parent)
     }
 
     if (!calculator.BuildSystem("../../json_input_files/Instructions.json"))
-        calculator.BuildSystem("json_input_files/Instructions.json");
+    {   QString fullpath = calculator.findFileRecursive("/","Instructions.json");
+        if (!fullpath.isEmpty())
+        {
+            calculator.BuildSystem(fullpath);
+        }
+        else
+        {
+            qDebug()<<"The instructions was failed to be loaded";
+        }
+    }
 }
 
 WebSocketServer::~WebSocketServer()

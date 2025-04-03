@@ -5,9 +5,12 @@
 #include <QWebSocketServer>
 #include <QWebSocket>
 #include "wholisticdewateringcalculator.h"
-#include <QHttpServerRequest>
-#include <QHttpServerResponse>
-#include <QHttpServer>
+
+#ifdef signals
+#undef signals
+#endif
+#include "crow.h"
+
 
 
 
@@ -17,7 +20,7 @@ class WebSocketServer : public QObject
 public:
     explicit WebSocketServer(quint16 port, QObject *parent = nullptr);
     ~WebSocketServer();
-    QHttpServerResponse StatementRecieved(const QHttpServerRequest &request);
+    crow::response StatementReceived(const crow::request& req);
 private slots:
     void onNewConnection();
     void onTextMessageReceived(QString message);
@@ -30,7 +33,7 @@ private:
     QWebSocketServer *m_server;
     QList<QWebSocket *> m_clients;
     WholisticDewateringCalculator calculator;
-    QHttpServer server;
+    crow::SimpleApp app;
 
 };
 

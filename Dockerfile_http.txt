@@ -1,0 +1,55 @@
+FROM ubuntu:24.04
+
+# Set noninteractive mode for faster install
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential cmake git curl wget unzip \
+    libgl1-mesa-dev libx11-xcb1 libxcb1 libxcb-xinerama0 \
+    libxkbcommon-x11-0 libssl-dev zlib1g-dev \
+    libxcb-cursor0 libxcb-keysyms1 libxcb-icccm4 \
+    libxcb-image0 libxcb-render-util0 libxcb-randr0 \
+    libxcb-shape0 libxcb-xfixes0 libxcb-sync1 \
+    qtbase5-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Download and extract Qt 6.6.0 prebuilt binary
+WORKDIR /opt
+RUN wget https://download.qt.io/archive/qt/6.6/6.6.0/qt6.6.0-linux-x64.tar.xz && \
+    tar -xf qt6.6.0-linux-x64.tar.xz && \
+    rm qt6.6.0-linux-x64.tar.xz
+
+# Set environment for Qt
+ENV PATH="/opt/qt6.6.0/bin:$PATH"
+ENV CMAKE_PREFIX_PATH="/opt/qt6.6.0"
+
+# Build and install QtWebSockets
+RUN git clone --branch 6.6.0 https://github.com/qt/qtwebsockets.git && \
+    cmake -S qtwebsockets -B qtwebsockets/build -DCMAKE_PREFIX_PATH=/opt/qt6.6.0 -DCMAKE_INSTALL_PREFIX=/opt/qt6.6.0 && \
+    cmake --build qtwebsockets/build --parallel && \
+    cmake --install qtwebsockets/build
+
+# Build and install QtHttpServer
+RUN git clone --branch 6.6.0 https://github.com/qt/qthttpserver.git && \
+    cmake -S qthttpserver -B qthttpserver/build -DCMAKE_PREFIX_PATH=/opt/qt6.6.0 -DCMAKE_INSTALL_PREFIX=/opt/qt6.6.0 && \
+    cmake --build qthttpserver/build --parallel && \
+    cmake --install qthttpserver/build
+
+# Set working directory for your app
+WORKDIR /app
+
+# Copy your source code (assumes main.cpp, CMakeLists.txt, etc.)
+COPY . .
+
+# Build your app
+RUN mkdir build && cd build && \
+    cmake .. -DCMAKE_PREFIX_PATH=/opt/qt6.6.0 && \
+    make -j$(nproc)
+
+# Expose the port your app runs on
+EXPOSE 8080
+
+# Run your app
+CMD ["./DewaterIQ"]
+

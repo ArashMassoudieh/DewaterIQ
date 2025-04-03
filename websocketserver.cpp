@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QTcpServer>
 
+using namespace crow;
 
 #ifdef USE_WEBSOCKETS
 WebSocketServer::WebSocketServer(quint16 port, QObject *parent)
@@ -32,52 +33,43 @@ WebSocketServer::WebSocketServer(quint16 port, QObject *parent)
 #ifdef USE_FLASK_TYPE
 WebSocketServer::WebSocketServer(quint16 port, QObject *parent): QObject(parent)
 {
+    CROW_ROUTE(app, "/calculate").methods("POST"_method)
+    ([this](const crow::request& req) {
+        return StatementReceived(req);
+    });
 
-    // Route POST /multiply to a handler function
-    server.route("/calculate", QHttpServerRequest::Method::Post,
-                 this, &WebSocketServer::StatementRecieved);
-
-    // Manually create and bind QTcpServer
-    QTcpServer *tcpServer = new QTcpServer();
-
-    if (!tcpServer->listen(QHostAddress::Any, port)) {
-        qCritical() << "Failed to listen on port" << port;
-        return;
-    }
-
-    if (!server.bind(tcpServer)) {
-        qCritical() << "Failed to bind QHttpServer to QTcpServer";
-        return;
-    }
-
-    qInfo() << "Server is listening on port" << tcpServer->serverPort();
+    app.port(port).multithreaded().run();
 }
 
-QHttpServerResponse WebSocketServer::StatementRecieved(const QHttpServerRequest &request)
+crow::response WebSocketServer::StatementReceived(const crow::request& req)
 {
+    QByteArray jsonBytes = QByteArray::fromStdString(req.body);
     QJsonParseError parseError;
-    QJsonDocument doc = QJsonDocument::fromJson(request.body(), &parseError);
+    QJsonDocument doc = QJsonDocument::fromJson(jsonBytes, &parseError);
 
     if (parseError.error != QJsonParseError::NoError || !doc.isObject()) {
-        return QHttpServerResponse("text/plain", "Invalid JSON");
-
+        return crow::response(400, "Invalid JSON");
     }
+
     if (!calculator.BuildSystem("../../json_input_files/Instructions.json"))
         calculator.BuildSystem("json_input_files/Instructions.json");
 
-    if (doc.isObject()) {
-        QJsonObject obj = doc.object();
-        for (auto it = obj.begin(); it != obj.end(); ++it) {
-            QString key = it.key();
-            QJsonValue value = it.value();
-            qDebug() << "Key:" << key << ", Value:" << value;
-            calculator.SetValue(key,value.toDouble());
-        }
+    QJsonObject obj = doc.object();
+    for (auto it = obj.begin(); it != obj.end(); ++it) {
+        QString key = it.key();
+        QJsonValue value = it.value();
+        qDebug() << "Key:" << key << ", Value:" << value;
+        calculator.SetValue(key, value.toDouble());
     }
 
     QJsonDocument responseDoc = calculator.PerformCalculation().toJson();
-    return QHttpServerResponse("application/json", responseDoc.toJson());
+    QByteArray responseJson = responseDoc.toJson();
 
+    crow::response res;
+    res.code = 200;
+    res.set_header("Content-Type", "application/json");
+    res.body = responseJson.toStdString();
+    return res;
 }
 #endif
 

@@ -1,6 +1,9 @@
 #include "websocketserver.h"
 #include <QDebug>
+#include <QTcpServer>
 
+
+#ifdef USE_WEBSOCKETS
 WebSocketServer::WebSocketServer(quint16 port, QObject *parent)
     : QObject(parent),
     m_server(new QWebSocketServer(QStringLiteral("Echo Server"),
@@ -24,6 +27,59 @@ WebSocketServer::WebSocketServer(quint16 port, QObject *parent)
         }
     }
 }
+#endif
+
+#ifdef USE_FLASK_TYPE
+WebSocketServer::WebSocketServer(quint16 port, QObject *parent): QObject(parent)
+{
+
+    // Route POST /multiply to a handler function
+    server.route("/calculate", QHttpServerRequest::Method::Post,
+                 this, &WebSocketServer::StatementRecieved);
+
+    // Manually create and bind QTcpServer
+    QTcpServer *tcpServer = new QTcpServer();
+
+    if (!tcpServer->listen(QHostAddress::Any, port)) {
+        qCritical() << "Failed to listen on port" << port;
+        return;
+    }
+
+    if (!server.bind(tcpServer)) {
+        qCritical() << "Failed to bind QHttpServer to QTcpServer";
+        return;
+    }
+
+    qInfo() << "Server is listening on port" << tcpServer->serverPort();
+}
+
+QHttpServerResponse WebSocketServer::StatementRecieved(const QHttpServerRequest &request)
+{
+    QJsonParseError parseError;
+    QJsonDocument doc = QJsonDocument::fromJson(request.body(), &parseError);
+
+    if (parseError.error != QJsonParseError::NoError || !doc.isObject()) {
+        return QHttpServerResponse("text/plain", "Invalid JSON");
+
+    }
+    if (!calculator.BuildSystem("../../json_input_files/Instructions.json"))
+        calculator.BuildSystem("json_input_files/Instructions.json");
+
+    if (doc.isObject()) {
+        QJsonObject obj = doc.object();
+        for (auto it = obj.begin(); it != obj.end(); ++it) {
+            QString key = it.key();
+            QJsonValue value = it.value();
+            qDebug() << "Key:" << key << ", Value:" << value;
+            calculator.SetValue(key,value.toDouble());
+        }
+    }
+
+    QJsonDocument responseDoc = calculator.PerformCalculation().toJson();
+    return QHttpServerResponse("application/json", responseDoc.toJson());
+
+}
+#endif
 
 WebSocketServer::~WebSocketServer()
 {
